@@ -1,23 +1,17 @@
 # Next Tasks — Ghost-Hunter
 
 ## Current Task:
-- **TASK-006: Primitives**
-  - Implement reusable design system primitives in `apps/web/src/components/primitives/`:
-    - `Display`: Clamped display headings with tight tracking.
-    - `Text`: Body, lead, and caption typography.
-    - `MonoData`: Tabular JetBrains Mono values for timers, IDs, and statuses.
-    - `Button`: Primary, secondary, signal, and destructive variants.
-    - `Field`: Bottom-border editorial input and textarea with labels and validation errors.
-    - `StatusChip`: Pill badge for workflow and sub-statuses with dot indicator.
-    - `Section`: Editorial full-bleed color block section.
-    - `Grain`: Tactile noise background component.
-    - `Hairline`: 1px ink rule/divider.
-    - `Counter`: Animated tabular count component.
+- **TASK-007: App shell**
+  - Implement layouts and navigation in `apps/web/src/components/layout/`:
+    - `MarketingLayout`: Lenis-ready, grain, editorial header/nav, full-screen overlay menu.
+    - `AppLayout`: Slim top bar, navigation links (`Dashboard`, `Applications`, `Notifications`, `Settings`), model health dot indicator, notification bell with unread badge.
+    - Domain placeholders and mock empty / error state screens (`EmptyState`, `ErrorState`, `DegradedBanner`).
+  - Validate by mounting `/app` with mock state and verifying layout responsiveness.
 
 ## Immediately Following Tasks:
-1. **TASK-007: App shell**
-   - Implement `MarketingLayout` and `AppLayout` with navigation, status dots, and mock empty/error states.
-2. **TASK-008: Applications UI**
-   - Wire application list, creation wizard stepper, and detail view to Fastify API.
-3. **TASK-009: Temporal infra**
+1. **TASK-008: Applications UI**
+   - Wire application list, creation wizard stepper, and detail view to Fastify API (`/api/applications`).
+2. **TASK-009: Temporal infra**
    - Configure local Temporal server, worker boot, and API Temporal client.
+3. **TASK-010: Workflow v1**
+   - Implement `ghostHunterWorkflow` with durable timer loop, status transitions, and query.

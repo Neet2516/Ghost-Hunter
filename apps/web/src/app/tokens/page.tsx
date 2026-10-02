@@ -1,4 +1,17 @@
 import React from 'react';
+import {
+  Display,
+  Text,
+  MonoData,
+  Button,
+  LinkArrow,
+  Field,
+  StatusChip,
+  Hairline,
+  Grain,
+  Section,
+  Counter,
+} from '@/components/primitives';
 
 export default function TokensPage() {
   const coreColors = [
@@ -11,160 +24,151 @@ export default function TokensPage() {
     { name: '--ash', value: '#6B6B70', bg: 'bg-ash', text: 'text-paper' },
   ];
 
-  const statusColors = [
-    { status: 'WAITING', color: 'bg-status-waiting', label: 'Phantom (#B9B4FF)' },
-    { status: 'GENERATING', color: 'bg-status-generating', label: 'Signal (#FF5B2E)' },
-    { status: 'AWAITING_REVIEW', color: 'bg-status-review', label: 'Amber (#F2B84B)' },
-    { status: 'REPLIED', color: 'bg-status-replied', label: 'Moss (#1F3D2B)', text: 'text-paper' },
-    { status: 'CANCELLED', color: 'bg-status-cancelled', label: 'Ash (#6B6B70)', text: 'text-paper' },
-    { status: 'FAILED', color: 'bg-status-failed', label: 'Crimson (#C2261B)', text: 'text-paper' },
-  ];
-
   return (
-    <div className="grain-overlay min-h-screen p-8 max-w-6xl mx-auto space-y-16">
-      {/* Header */}
-      <header className="border-b hairline pb-6">
-        <span className="font-mono text-xs uppercase tracking-widest text-signal">
-          Ghost-Hunter Design System
-        </span>
-        <h1 className="display-h1 uppercase mt-2">Design Tokens & Typography</h1>
-        <p className="text-ash text-lg mt-2">
-          Editorial signal-hunting aesthetic: high contrast, tactile grain, hard shadows, clamped grotesque headlines.
-        </p>
-      </header>
+    <div className="relative min-h-screen bg-paper text-ink pb-24">
+      <Grain />
+
+      <Section color="paper" borderBottom>
+        <div className="flex flex-col gap-2">
+          <Text variant="caption" className="text-signal">
+            Ghost-Hunter Design Primitives
+          </Text>
+          <Display variant="h1">Design Tokens & Primitives</Display>
+          <Text variant="lead" className="text-ash max-w-3xl">
+            Editorial typography, hard shadows, status indicators, and form inputs designed for the signal-hunting interface.
+          </Text>
+        </div>
+      </Section>
 
       {/* 1. Core Palette */}
-      <section className="space-y-6">
-        <h2 className="display-h2 uppercase">01 / Palette Tokens</h2>
+      <Section color="paper">
+        <Display variant="h2" className="mb-6">
+          01 / Color Tokens
+        </Display>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
           {coreColors.map((color) => (
             <div
               key={color.name}
               className={`${color.bg} ${color.text} ${color.border ? 'hairline' : ''} p-4 shadow-hard flex flex-col justify-between h-32`}
             >
-              <span className="font-mono text-xs font-bold">{color.name}</span>
-              <span className="font-mono text-sm tracking-tight">{color.value}</span>
+              <Text variant="caption" className="font-bold">{color.name}</Text>
+              <MonoData value={color.value} highlight="default" className={color.text} />
             </div>
           ))}
         </div>
-      </section>
+      </Section>
 
-      {/* 2. Status Tokens */}
-      <section className="space-y-6">
-        <h2 className="display-h2 uppercase">02 / Workflow Statuses</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {statusColors.map((st) => (
-            <div
-              key={st.status}
-              className={`${st.color} ${st.text || 'text-ink'} p-4 shadow-hard flex flex-col justify-between h-28`}
-            >
-              <span className="font-mono text-xs uppercase font-extrabold tracking-wider">{st.status}</span>
-              <span className="font-mono text-xs opacity-80">{st.label}</span>
-            </div>
-          ))}
+      {/* 2. Status Chips */}
+      <Section color="bone" borderTop borderBottom>
+        <Display variant="h2" className="mb-6">
+          02 / StatusChip Primitive
+        </Display>
+        <div className="flex flex-wrap gap-3 items-center">
+          <StatusChip status="DRAFT" />
+          <StatusChip status="HUNTING" subStatus="WAITING" />
+          <StatusChip status="HUNTING" subStatus="GENERATING" />
+          <StatusChip status="HUNTING" subStatus="AWAITING_REVIEW" />
+          <StatusChip status="HUNTING" subStatus="DEGRADED" />
+          <StatusChip status="REPLIED" />
+          <StatusChip status="COMPLETED" />
+          <StatusChip status="CANCELLED" />
+          <StatusChip status="FAILED" />
         </div>
-      </section>
+      </Section>
 
-      {/* 3. Typography Scale */}
-      <section className="space-y-8 hairline p-8 bg-paper shadow-hard">
-        <h2 className="display-h2 uppercase">03 / Typography Hierarchy</h2>
+      {/* 3. Typography & Counters */}
+      <Section color="paper">
+        <Display variant="h2" className="mb-8">
+          03 / Typography, Counters & MonoData
+        </Display>
 
-        <div>
-          <span className="font-mono text-xs text-ash uppercase">Display XL — Bricolage Grotesque (clamp: 3.5rem to 12rem)</span>
-          <div className="display-xl text-ink mt-2">
-            SILENCE IS DATA.
-          </div>
-        </div>
-
-        <div className="pt-6 hairline-t">
-          <span className="font-mono text-xs text-ash uppercase">Display H1 — clamp(2.25rem, 6vw, 4.5rem)</span>
-          <div className="display-h1 uppercase text-ink mt-1">
-            Autonomous Outreach Cadence
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <Counter value="14" unit="DAYS" label="Cadence waiting time" size="giant" highlight="signal" />
+          <Counter value="03" unit="DRAFTS" label="Follow-ups awaiting review" size="giant" highlight="default" />
+          <Counter value="28" unit="HUNTS" label="Active Temporal workflows" size="giant" highlight="moss" />
         </div>
 
-        <div className="pt-6 hairline-t">
-          <span className="font-mono text-xs text-ash uppercase">Display H2 — clamp(1.75rem, 3.5vw, 2.75rem)</span>
-          <div className="display-h2 text-ink mt-1">
-            Temporal Durable Timer Wait
-          </div>
+        <Hairline color="ash" className="my-8" />
+
+        <div className="space-y-6">
+          <Display variant="xl">SILENCE IS DATA.</Display>
+          <Display variant="h1">Autonomous Cadence Wait</Display>
+          <Display variant="h2">Temporal Workflow State Machine</Display>
+          <Text variant="lead">
+            Every outreach thread is persisted durably as a Temporal workflow that sleeps for days and awakens on recruiter reply.
+          </Text>
+          <Text variant="body">
+            Local Gemma generates high-context follow-up emails without exposing applicant data to external cloud services.
+          </Text>
         </div>
 
-        <div className="pt-6 hairline-t grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <span className="font-mono text-xs text-ash uppercase">Body (Inter 16/24)</span>
-            <p className="text-base text-ink mt-2 leading-relaxed">
-              Applicants send dozens of messages and lose track of who replied, who was followed up, and when. Ghost-Hunter persists outreach state durably across crashes and restarts, keeping all recruiter data completely private and local.
-            </p>
-          </div>
-          <div>
-            <span className="font-mono text-xs text-ash uppercase">Mono Data (JetBrains Mono tabular-nums)</span>
-            <div className="mt-2 space-y-1 font-mono text-sm">
-              <div className="p-2 bg-bone hairline flex justify-between">
-                <span>WORKFLOW_ID</span>
-                <span className="text-signal">gh-7c9e6679-7425-40de</span>
-              </div>
-              <div className="p-2 bg-bone hairline flex justify-between">
-                <span>NEXT_TIMER_EXPIRY</span>
-                <span>02d 14h 22m 19s</span>
-              </div>
-              <div className="p-2 bg-bone hairline flex justify-between">
-                <span>STAGE</span>
-                <span>STAGE 02 / 03</span>
-              </div>
-            </div>
-          </div>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <MonoData label="WORKFLOW_ID" value="gh-4aec24c-9f25" inline highlight="signal" />
+          <MonoData label="NEXT_WAKEUP" value="03d 08h 12m" inline highlight="moss" />
         </div>
-      </section>
+      </Section>
 
-      {/* 4. Shadows & Buttons */}
-      <section className="space-y-6">
-        <h2 className="display-h2 uppercase">04 / Shadows & Buttons</h2>
-        <div className="flex flex-wrap gap-4 items-center">
-          <button className="btn-primary">
-            Primary Action
-          </button>
-          <button className="btn-secondary">
-            Secondary Action &rarr;
-          </button>
-          <button className="btn-signal">
-            Trigger Ghost Hunt
-          </button>
-          <span className="px-3 py-1 rounded-full bg-status-waiting text-ink font-mono text-xs font-bold uppercase tracking-wider hairline">
-            Status: WAITING
-          </span>
-          <span className="px-3 py-1 rounded-full bg-status-review text-ink font-mono text-xs font-bold uppercase tracking-wider hairline">
-            Status: AWAITING_REVIEW
-          </span>
+      {/* 4. Buttons & Links */}
+      <Section color="paper" borderTop>
+        <Display variant="h2" className="mb-6">
+          04 / Button & LinkArrow Primitives
+        </Display>
+        <div className="flex flex-wrap gap-4 items-center mb-8">
+          <Button variant="primary">Primary Action</Button>
+          <Button variant="signal">Start Ghost Hunt</Button>
+          <Button variant="secondary">Secondary Button</Button>
+          <Button variant="destructive">Cancel Hunt</Button>
+          <Button variant="primary" isLoading>Processing</Button>
         </div>
-      </section>
+        <div className="flex items-center gap-8">
+          <LinkArrow href="/app">Go to App Dashboard</LinkArrow>
+          <LinkArrow href="https://temporal.io" external>Temporal Documentation</LinkArrow>
+        </div>
+      </Section>
 
-      {/* 5. Editorial Inputs */}
-      <section className="space-y-6 max-w-xl">
-        <h2 className="display-h2 uppercase">05 / Editorial Input Style</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block font-mono text-xs uppercase text-ash tracking-wider mb-1">
-              Target Company
-            </label>
-            <input
-              type="text"
-              defaultValue="Stripe"
-              className="input-editorial font-display text-2xl font-bold"
-            />
-          </div>
-          <div>
-            <label className="block font-mono text-xs uppercase text-ash tracking-wider mb-1">
-              Recruiter Name
-            </label>
-            <input
-              type="text"
-              defaultValue="Patrick Collison"
-              className="input-editorial font-display text-2xl font-bold"
+      {/* 5. Editorial Form Fields */}
+      <Section color="bone" borderTop>
+        <Display variant="h2" className="mb-6">
+          05 / Field Primitive
+        </Display>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+          <Field
+            label="Target Company"
+            required
+            defaultValue="Stripe"
+            placeholder="e.g. Stripe, Linear"
+          />
+          <Field
+            label="Recruiter Name"
+            required
+            defaultValue="Patrick Collison"
+            placeholder="Recruiter or Engineering Lead"
+          />
+          <Field
+            as="select"
+            label="Outreach Channel"
+            options={[
+              { label: 'Email', value: 'email' },
+              { label: 'LinkedIn Message', value: 'linkedin' },
+              { label: 'Other', value: 'other' },
+            ]}
+          />
+          <Field
+            label="Follow-Up Cadence Delay"
+            hint="seconds in demo mode, days in prod"
+            defaultValue="20"
+          />
+          <div className="md:col-span-2">
+            <Field
+              as="textarea"
+              label="Outreach Context"
+              required
+              defaultValue="Discussed distributed systems and SQLite replication after career fair presentation."
+              error=""
             />
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }

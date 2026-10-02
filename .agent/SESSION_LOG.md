@@ -38,9 +38,18 @@
 ## 2026-10-03 — Session 5
 - **Focus:** TASK-005 (Design tokens & fonts).
 - **Actions:**
-  - Integrated Google Fonts (`Bricolage Grotesque`, `Inter`, `JetBrains Mono`) into `apps/web/src/app/layout.tsx`.
-  - Expanded `apps/web/src/app/globals.css` with core palette CSS variables, tactile noise grain, hard shadows, hairlines, and display typography utilities.
-  - Updated `apps/web/tailwind.config.ts` with color tokens, font families, and shadows.
-  - Created `/tokens` route (`apps/web/src/app/tokens/page.tsx`) demonstrating palette, status badges, typography scale, buttons, and inputs.
-  - Verified Next.js build (`next build` generates 5 static pages) and `pnpm -r typecheck` clean.
+  - Integrated Google Fonts into `apps/web/src/app/layout.tsx`.
+  - Expanded `apps/web/src/app/globals.css` with core palette CSS variables and utilities.
+  - Updated `apps/web/tailwind.config.ts`.
+  - Created `/tokens` route (`apps/web/src/app/tokens/page.tsx`).
+  - Created git commit (`cd37fdb`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 6
+- **Focus:** TASK-006 (Primitives).
+- **Actions:**
+  - Added `cn` class utility in `apps/web/src/lib/utils.ts`.
+  - Implemented full suite of design primitives in `apps/web/src/components/primitives/`:
+    - `Display`, `Text`, `MonoData`, `Button`, `LinkArrow`, `Field`, `StatusChip`, `Hairline`, `Grain`, `Section`, `Counter`.
+  - Updated `/tokens` route to showcase and validate all primitives.
+  - Verified Next.js static build (`5/5 pages generated`) and workspace typecheck clean.
   - Ready for git commit and remote push.
