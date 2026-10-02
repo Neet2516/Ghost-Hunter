@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Workflow v1 (TASK-010):
+  - Created deterministic `ghostHunterWorkflow` in `apps/worker/src/workflows/ghostHunterWorkflow.ts` adhering strictly to sandbox rules.
+  - Implemented multi-stage cadence loop with durable `sleep` timers, stage transitions, and `getState` Query handler.
+  - Implemented activities for application status updates, audit event logging, user notifications, and health checks in `apps/worker/src/activities/`.
+  - Added SQLite schema and connection helpers in worker for local activity writes.
+  - Validated with time-skipping unit test suite in `apps/worker/src/__tests__/workflow.test.ts`.
 - Implemented Temporal Infrastructure (TASK-009):
   - Created `docker-compose.yml` for local Temporal dev server with persistent SQLite volume and web UI (ports 7233 and 8233).
   - Configured root script `pnpm temporal` using installed Temporal CLI v1.9.1.

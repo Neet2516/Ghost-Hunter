@@ -83,4 +83,15 @@
   - Created typed API Temporal client in `apps/api/src/temporal-client/index.ts` with start/signal/query helpers and conflict handling.
   - Added unit/integration test suites using `@temporalio/testing` in both `apps/worker` and `apps/api`.
   - All 35 workspace tests passing and `pnpm -r typecheck` clean.
+  - Created git commit (`8d57f00`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 10
+- **Focus:** TASK-010 (Workflow v1).
+- **Actions:**
+  - Implemented `ghostHunterWorkflow` with deterministic wait loop, stage iterations, status transitions, activity proxies, and `getState` Query.
+  - Created worker database schema and connection module in `apps/worker/src/db/`.
+  - Implemented activities for `updateApplicationStatus`, `persistEvent`, `notifyUser`, and `checkModelHealth`.
+  - Created time-skipping workflow unit tests in `apps/worker/src/__tests__/workflow.test.ts`.
+  - Verified 35 tests passing across monorepo and clean typecheck on all 4 packages.
+  - Verified Next.js web build passes cleanly.
   - Created git commit and pushed to `origin main`.

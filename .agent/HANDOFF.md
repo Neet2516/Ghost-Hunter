@@ -1,12 +1,12 @@
 # Handoff — Ghost-Hunter
 
 ## Current State
-- **TASK-001 through TASK-009 Complete:** Monorepo initialized, shared schemas created, SQLite migrations configured, Fastify CRUD endpoints functioning, design tokens established, primitives built, app shell & Applications UI integrated, Temporal infrastructure wired with worker boot and API client verified by test environments.
+- **TASK-001 through TASK-010 Complete:** Monorepo initialized, shared schemas created, SQLite migrations configured, Fastify CRUD endpoints functioning, design tokens established, primitives built, app shell & Applications UI integrated, Temporal infrastructure operational, and `ghostHunterWorkflow` v1 running with deterministic stage loop, durable wait, activity persistence, and time-skipping test verification.
 
 ## Active Next Task
-- **TASK-010: Workflow v1**
-  - Implement `ghostHunterWorkflow` with durable timer loop, status transitions, activity invocations, and query handler.
-  - Implement database/status activities and time-skipping workflow unit tests.
+- **TASK-011: Signals + race guard**
+  - Implement `recruiterReplied` and `cancelHunt` signals in `ghostHunterWorkflow`.
+  - Implement deterministic race guard using `condition()` to interrupt wait loop and safely discard drafts if race occurs during generation.
 
 ## Notes & Environment
 - Node and pnpm are in `~/.local/bin`. Keep PATH exported (`export PATH="/home/kailler/.local/bin:$PATH"`).
