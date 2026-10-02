@@ -48,8 +48,17 @@
 - **Focus:** TASK-006 (Primitives).
 - **Actions:**
   - Added `cn` class utility in `apps/web/src/lib/utils.ts`.
-  - Implemented full suite of design primitives in `apps/web/src/components/primitives/`:
-    - `Display`, `Text`, `MonoData`, `Button`, `LinkArrow`, `Field`, `StatusChip`, `Hairline`, `Grain`, `Section`, `Counter`.
+  - Implemented full suite of design primitives in `apps/web/src/components/primitives/`.
   - Updated `/tokens` route to showcase and validate all primitives.
   - Verified Next.js static build (`5/5 pages generated`) and workspace typecheck clean.
+  - Created git commit (`1cef79d`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 7
+- **Focus:** TASK-007 (App shell).
+- **Actions:**
+  - Implemented `AppLayout` and `AppNavbar` in `apps/web/src/components/layout/`.
+  - Implemented `MarketingLayout` and `MarketingNavbar` in `apps/web/src/components/layout/`.
+  - Implemented `EmptyState`, `ErrorState`, and `DegradedBanner` in `apps/web/src/components/domain/`.
+  - Built `/app` dashboard route with metrics counters and active sentinel stream.
+  - Verified `next build` (6 static pages) and workspace typechecks clean.
   - Ready for git commit and remote push.

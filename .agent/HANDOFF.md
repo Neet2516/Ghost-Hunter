@@ -1,20 +1,14 @@
 # Handoff — Ghost-Hunter
 
 ## Current State
-- **TASK-001 Complete:** Monorepo initialized and builds verified.
-- **TASK-002 Complete:** Shared domain schemas, enums, API contracts, and unit tests passing.
-- **TASK-003 Complete:** SQLite schema, Drizzle migration generation, connection management, repository CRUD, and integration tests passing.
-- **TASK-004 Complete:** Fastify application CRUD endpoints, Zod validation, error envelope, and integration tests passing.
-- **TASK-005 Complete:** Design system tokens, typography, tactile noise grain, and `/tokens` validation page verified.
-- **TASK-006 Complete:** Reusable design primitives (`Display`, `Text`, `MonoData`, `Button`, `LinkArrow`, `Field`, `StatusChip`, `Hairline`, `Grain`, `Section`, `Counter`) verified in `/tokens` build.
+- **TASK-001 through TASK-007 Complete:** Monorepo initialized, shared schemas created, SQLite migrations configured, Fastify CRUD endpoints functioning, design tokens established, primitives built, app shell & `/app` dashboard screen running.
 
-## Next Task
-- **TASK-007: App shell**
-  - Implement layout architecture in `apps/web/src/components/layout/`:
-    - `MarketingLayout`: Full-screen overlay menu, tactile grain, pinned story container.
-    - `AppLayout`: Slim top header, model health indicator dot, notification bell with unread count, navigation bar (`/app`, `/app/applications`, `/app/notifications`, `/app/settings`).
-    - Domain placeholders: `EmptyState`, `ErrorState`, `DegradedBanner`.
-  - Validate with a mocked `/app` dashboard screen.
+## Active Next Task
+- **TASK-008: Applications UI**
+  - Implement typed API client in `apps/web/src/lib/api.ts` connecting to `http://localhost:3001`.
+  - Build Applications list page (`/app/applications`) with search, status filters, and `EmptyState`.
+  - Build stepped creation form (`/app/applications/new`).
+  - Build application detail page (`/app/applications/[id]`).
 
 ## Notes & Environment
 - Node and pnpm are in `~/.local/bin`. Keep PATH exported (`export PATH="/home/kailler/.local/bin:$PATH"`).

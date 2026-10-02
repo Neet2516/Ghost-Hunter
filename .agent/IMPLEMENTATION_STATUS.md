@@ -8,8 +8,8 @@
 | TASK-004 | API CRUD (Application endpoints + validation + error shape) | DONE | Verified: Fastify REST routes (`POST`, `GET`, `GET :id`, `PATCH :id`, `DELETE :id`, `GET :id/events`, `GET :id/followups`), Zod validation, standard error envelope `{ error: { code, message, fields? } }`, verified via 11 integration tests in `apps/api/src/routes/__tests__/applications.test.ts` |
 | TASK-005 | Design tokens & fonts (Tailwind/CSS tokens per DESIGN_SYSTEM) | DONE | Verified: Google Fonts (`Bricolage Grotesque`, `Inter`, `JetBrains Mono`), CSS custom properties, noise grain overlay, hard shadows, editorial styles; `/tokens` validation page built and rendered statically |
 | TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | DONE | Verified: Implemented Display, Text, MonoData, Button, LinkArrow, Field, StatusChip, Hairline, Grain, Section, and Counter in `apps/web/src/components/primitives/`; rendered in `/tokens` route; `next build` and workspace typecheck clean |
-| TASK-007 | App shell (Layouts, nav, mock states) | TODO | Next task |
-| TASK-008 | Applications UI (List, create stepper, detail wired to API) | TODO | Pending TASK-004, TASK-007 |
+| TASK-007 | App shell (Layouts, nav, mock states) | DONE | Verified: Implemented `AppLayout`, `AppNavbar`, `MarketingLayout`, `MarketingNavbar`, `EmptyState`, `ErrorState`, `DegradedBanner`; built `/app` dashboard screen; verified with `next build` (6 static pages) and clean typecheck |
+| TASK-008 | Applications UI (List, create stepper, detail wired to API) | TODO | Next task |
 | TASK-009 | Temporal infra (Dev server/compose, worker boot, API client) | TODO | Pending TASK-001 |
 | TASK-010 | Workflow v1 (Wait loop, statuses, query, finalize) | TODO | Pending TASK-009, TASK-003 |
 | TASK-011 | Signals + race guard (recruiterReplied, cancelHunt) | TODO | Pending TASK-010 |
