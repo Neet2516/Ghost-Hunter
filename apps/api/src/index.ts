@@ -1,27 +1,25 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import { GHOST_HUNTER_TASK_QUEUE } from '@ghost-hunter/shared';
-
-const app = Fastify({ logger: true });
-
-await app.register(cors, {
-  origin: process.env.WEB_ORIGIN || 'http://localhost:3000'
-});
-
-app.get('/health', async () => {
-  return { status: 'ok', taskQueue: GHOST_HUNTER_TASK_QUEUE };
-});
+import { buildApp } from './app.js';
+import { runMigrations } from './db/index.js';
 
 const port = Number(process.env.API_PORT) || 3001;
 
-if (process.env.NODE_ENV !== 'test') {
+async function start() {
   try {
+    // Run DB migrations before starting server
+    runMigrations();
+
+    const app = await buildApp({ logger: true });
+
     await app.listen({ port, host: '0.0.0.0' });
-    console.log(`Ghost-Hunter API listening on port ${port}`);
+    console.log(`Ghost-Hunter API server listening on http://localhost:${port}`);
   } catch (err) {
-    app.log.error(err);
+    console.error('Fatal error starting server:', err);
     process.exit(1);
   }
 }
 
-export default app;
+if (process.env.NODE_ENV !== 'test') {
+  start();
+}
+
+export { buildApp };

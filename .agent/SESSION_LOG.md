@@ -21,10 +21,19 @@
 ## 2026-10-03 — Session 3
 - **Focus:** TASK-003 (DB + migrations).
 - **Actions:**
-  - Added Drizzle ORM SQLite schema for `applications`, `followups`, `events`, and `notifications` with relational foreign keys and indexes in `apps/api/src/db/schema.ts`.
-  - Configured `drizzle.config.ts` and generated initial migration (`apps/api/drizzle/0000_faulty_richard_fisk.sql`).
-  - Implemented database factory with WAL journal mode and foreign keys pragma in `apps/api/src/db/connection.ts`.
-  - Implemented typed `DatabaseRepository` in `apps/api/src/db/crud.ts` covering applications, follow-ups, events, and notifications.
+  - Added Drizzle ORM SQLite schema for `applications`, `followups`, `events`, and `notifications` in `apps/api/src/db/schema.ts`.
+  - Configured `drizzle.config.ts` and generated initial migration.
+  - Implemented database factory with WAL journal mode and foreign keys pragma.
+  - Implemented typed `DatabaseRepository` in `apps/api/src/db/crud.ts`.
   - Added integration test suite `apps/api/src/db/__tests__/db.test.ts` (6/6 passing).
-  - Verified clean `pnpm -r typecheck` and `pnpm test` (20/20 total tests across workspaces).
+  - Created git commit (`4aec24c`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 4
+- **Focus:** TASK-004 (API CRUD).
+- **Actions:**
+  - Built Fastify application factory `apps/api/src/app.ts` with CORS and unified error handler `apps/api/src/middleware/errors.ts`.
+  - Implemented application routes in `apps/api/src/routes/applications.ts` (`POST /`, `GET /`, `GET /:id`, `PATCH /:id`, `DELETE /:id`, `GET /:id/events`, `GET /:id/followups`).
+  - Integrated Zod request validation formatting 400 responses with `{ error: { code, message, fields } }`.
+  - Added 11 API integration tests in `apps/api/src/routes/__tests__/applications.test.ts` (11/11 passing).
+  - Verified all workspace tests (31/31 passed) and `pnpm -r typecheck` clean.
   - Ready for git commit and remote push.
