@@ -1,0 +1,16 @@
+# Roadmap (dependency-ordered; reordered so infra precedes UI wiring)
+- **P0 Foundation** — monorepo (apps/web, apps/api, apps/worker, packages/shared), lint, env, scripts.
+- **P1 Design system** — tokens, fonts, primitives.
+- **P2 Backend/API + DB** (moved before UI data work) — schema, CRUD, validation.
+- **P3 Frontend shell** — layouts, nav, empty/error states with mocked data.
+- **P4 Application management UI** — create/list/detail wired to API.
+- **P5 Temporal infra** — dev server, worker boot, health.
+- **P6 Ghost-Hunter workflow** — timer loop, status activities, query.
+- **P7 Recruiter/cancel Signals** + race guard.
+- **P8 Ollama + Gemma activity** — prompt, JSON validation, retry, fallback.
+- **P9 Draft review flow** — decision signal, UI.
+- **P10 Notifications** — feed, SSE, browser notification.
+- **P11 Failure/recovery tests** — restart, race, Ollama down.
+- **P12 Landing + motion polish.**
+- **P13 Demo prep** — seed script, time-skip mode, recording.
+- **P14 Submission** — README, screenshots, cleanup.
