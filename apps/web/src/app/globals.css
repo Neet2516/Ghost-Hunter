@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  /* Core Palette Tokens */
   --ink: #0E0E10;
   --paper: #F3EFE6;
   --signal: #FF5B2E;
@@ -10,27 +11,171 @@
   --moss: #1F3D2B;
   --bone: #E4DED0;
   --ash: #6B6B70;
-  --review: #F2B84B;
-  --danger: #C2261B;
+
+  /* Status Colors */
+  --status-waiting: var(--phantom);
+  --status-generating: var(--signal);
+  --status-review: #F2B84B;
+  --status-replied: var(--moss);
+  --status-cancelled: var(--ash);
+  --status-failed: #C2261B;
 }
 
 body {
   color: var(--ink);
   background-color: var(--paper);
-  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hard outline utility */
-.border-ink {
-  border-color: var(--ink);
-}
-
-/* Hairline border */
+/* Hairlines & Hard Borders */
 .hairline {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+.hairline-t {
+  border-top: 1px solid var(--ink);
+}
+
+.hairline-b {
+  border-bottom: 1px solid var(--ink);
+}
+
+.hairline-l {
+  border-left: 1px solid var(--ink);
+}
+
+.hairline-r {
+  border-right: 1px solid var(--ink);
+}
+
+.hairline-2 {
+  border: 2px solid var(--ink);
+}
+
+/* Editorial Shadows */
+.shadow-hard {
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.shadow-hard-lg {
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.shadow-hard-signal {
+  box-shadow: 4px 4px 0 var(--signal);
+}
+
+.shadow-hard-moss {
+  box-shadow: 4px 4px 0 var(--moss);
+}
+
+/* Tactile Editorial Noise Grain */
+.grain-overlay {
+  position: relative;
+}
+
+.grain-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Editorial Typography Utilities */
+.display-xl {
+  font-family: var(--font-display), Anton, sans-serif;
+  font-size: clamp(3.5rem, 12vw, 12rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.display-h1 {
+  font-family: var(--font-display), Anton, sans-serif;
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.display-h2 {
+  font-family: var(--font-display), Anton, sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Button & Interactive Micro-Animations */
+.btn-primary {
+  background-color: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 4px 4px 0 rgba(14, 14, 16, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--paper);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: translate(-1px, -1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bone);
+  transform: translate(-1px, -1px);
+}
+
+.btn-signal {
+  background-color: var(--signal);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.btn-signal:hover {
+  background-color: var(--ink);
+  color: var(--signal);
+  transform: translate(-1px, -1px);
+}
+
+/* Editorial Inputs: bottom-border only */
+.input-editorial {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  padding: 0.75rem 0;
+  font-size: 1.125rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s ease, border-width 0.2s ease;
+}
+
+.input-editorial:focus {
+  border-bottom: 2px solid var(--signal);
 }

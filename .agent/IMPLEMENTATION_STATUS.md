@@ -6,8 +6,8 @@
 | TASK-002 | Shared schemas (Zod types/enums from DATA_MODEL) | DONE | Verified: complete domain schemas, enums, workflow states, and API contracts defined in `packages/shared/src/`; 14 unit tests passing with Vitest; workspace typecheck clean |
 | TASK-003 | DB + migrations (Drizzle SQLite schema) | DONE | Verified: SQLite schema (`applications`, `followups`, `events`, `notifications`), indexes, Drizzle migrations generated, repository CRUD operations and cascade deletions verified via 6 integration tests in `apps/api/src/db/__tests__/db.test.ts` |
 | TASK-004 | API CRUD (Application endpoints + validation + error shape) | DONE | Verified: Fastify REST routes (`POST`, `GET`, `GET :id`, `PATCH :id`, `DELETE :id`, `GET :id/events`, `GET :id/followups`), Zod validation, standard error envelope `{ error: { code, message, fields? } }`, verified via 11 integration tests in `apps/api/src/routes/__tests__/applications.test.ts` |
-| TASK-005 | Design tokens & fonts (Tailwind/CSS tokens per DESIGN_SYSTEM) | TODO | Next task |
-| TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | TODO | Pending TASK-005 |
+| TASK-005 | Design tokens & fonts (Tailwind/CSS tokens per DESIGN_SYSTEM) | DONE | Verified: Google Fonts (`Bricolage Grotesque`, `Inter`, `JetBrains Mono`), CSS custom properties, noise grain overlay, hard shadows, editorial styles; `/tokens` validation page built and rendered statically |
+| TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | TODO | Next task |
 | TASK-007 | App shell (Layouts, nav, mock states) | TODO | Pending TASK-006 |
 | TASK-008 | Applications UI (List, create stepper, detail wired to API) | TODO | Pending TASK-004, TASK-007 |
 | TASK-009 | Temporal infra (Dev server/compose, worker boot, API client) | TODO | Pending TASK-001 |
