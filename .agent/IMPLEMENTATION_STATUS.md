@@ -10,7 +10,7 @@
 | TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | DONE | Verified: Implemented Display, Text, MonoData, Button, LinkArrow, Field, StatusChip, Hairline, Grain, Section, and Counter in `apps/web/src/components/primitives/`; rendered in `/tokens` route; `next build` and workspace typecheck clean |
 | TASK-007 | App shell (Layouts, nav, mock states) | DONE | Verified: Implemented `AppLayout`, `AppNavbar`, `MarketingLayout`, `MarketingNavbar`, `EmptyState`, `ErrorState`, `DegradedBanner`; built `/app` dashboard screen; verified with `next build` (6 static pages) and clean typecheck |
 | TASK-008 | Applications UI (List, create stepper, detail wired to API) | DONE | Verified: TanStack Query API client and API rewrites; Applications list with status badges and metrics; 3-step creation wizard (Company, Strategy, Review); application detail view with follow-ups, timeline, and actions; Next.js build and typecheck passing |
-| TASK-009 | Temporal infra (Dev server/compose, worker boot, API client) | TODO | Pending TASK-001 |
+| TASK-009 | Temporal infra (Dev server/compose, worker boot, API client) | DONE | Verified: docker-compose.yml configured for Temporal server; Temporal CLI v1.9.1 installed with `pnpm temporal` script; worker bootstrap with NativeConnection in `apps/worker/src/worker.ts`; API Temporal client in `apps/api/src/temporal-client/index.ts`; 35 workspace tests passing including worker and client integration tests |
 | TASK-010 | Workflow v1 (Wait loop, statuses, query, finalize) | TODO | Pending TASK-009, TASK-003 |
 | TASK-011 | Signals + race guard (recruiterReplied, cancelHunt) | TODO | Pending TASK-010 |
 | TASK-012 | Start/reply/cancel endpoints + duplicate protection | TODO | Pending TASK-011, TASK-004 |

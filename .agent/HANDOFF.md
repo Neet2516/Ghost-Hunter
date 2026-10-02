@@ -1,13 +1,12 @@
 # Handoff — Ghost-Hunter
 
 ## Current State
-- **TASK-001 through TASK-008 Complete:** Monorepo initialized, shared schemas created, SQLite migrations configured, Fastify CRUD endpoints functioning, design tokens established, primitives built, app shell running, and full Applications UI (List, 3-step wizard, detail view with timeline) integrated.
+- **TASK-001 through TASK-009 Complete:** Monorepo initialized, shared schemas created, SQLite migrations configured, Fastify CRUD endpoints functioning, design tokens established, primitives built, app shell & Applications UI integrated, Temporal infrastructure wired with worker boot and API client verified by test environments.
 
 ## Active Next Task
-- **TASK-009: Temporal Infra**
-  - Configure local Temporal server setup (`docker-compose.yml` or script with persistent SQLite `--db-filename ./temporal.db`).
-  - Wire worker bootstrap in `apps/worker/src/worker.ts` and API Temporal client in `apps/api/src/temporal/`.
-  - Validate worker connection and queue readiness.
+- **TASK-010: Workflow v1**
+  - Implement `ghostHunterWorkflow` with durable timer loop, status transitions, activity invocations, and query handler.
+  - Implement database/status activities and time-skipping workflow unit tests.
 
 ## Notes & Environment
 - Node and pnpm are in `~/.local/bin`. Keep PATH exported (`export PATH="/home/kailler/.local/bin:$PATH"`).

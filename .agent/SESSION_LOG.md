@@ -72,4 +72,15 @@
   - Implemented `/app/applications/new` with 3-step wizard (Role & Company, Recruiter & Context, Strategy & Cadence).
   - Implemented `/app/applications/[id]` with application detail, status bar, action buttons, follow-up log, and timeline.
   - Verified `next build` (8 static and dynamic pages) and workspace typechecks clean.
+  - Created git commit (`3d19dd0`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 9
+- **Focus:** TASK-009 (Temporal Infra).
+- **Actions:**
+  - Configured `docker-compose.yml` for local Temporal server with persistence and UI.
+  - Installed Temporal CLI v1.9.1 to user environment and added `pnpm temporal` script.
+  - Wired worker bootstrap in `apps/worker/src/worker.ts` with NativeConnection and graceful shutdown.
+  - Created typed API Temporal client in `apps/api/src/temporal-client/index.ts` with start/signal/query helpers and conflict handling.
+  - Added unit/integration test suites using `@temporalio/testing` in both `apps/worker` and `apps/api`.
+  - All 35 workspace tests passing and `pnpm -r typecheck` clean.
   - Created git commit and pushed to `origin main`.

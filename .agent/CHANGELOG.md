@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Temporal Infrastructure (TASK-009):
+  - Created `docker-compose.yml` for local Temporal dev server with persistent SQLite volume and web UI (ports 7233 and 8233).
+  - Configured root script `pnpm temporal` using installed Temporal CLI v1.9.1.
+  - Implemented worker bootstrap with NativeConnection, configuration, and graceful SIGINT/SIGTERM handlers in `apps/worker/src/worker.ts`.
+  - Implemented typed Fastify Temporal client in `apps/api/src/temporal-client/index.ts` with workflow start, signal helpers, state queries, and 409 duplicate conflict handling.
+  - Added unit and integration test suites using `@temporalio/testing` with time-skipping environment.
 - Implemented Applications UI and client integration in `apps/web` (TASK-008):
   - TanStack Query provider and typed API client wrapper in `apps/web/src/lib/api.ts` with Next.js API proxying.
   - Applications list view (`/app/applications`) with search, filter tabs, company metadata, and status badges.

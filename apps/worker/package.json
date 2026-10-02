@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/worker.ts",
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@ghost-hunter/shared": "workspace:*",
@@ -16,8 +17,10 @@
     "@temporalio/workflow": "^1.11.7"
   },
   "devDependencies": {
+    "@temporalio/testing": "^1.11.7",
     "@types/node": "^20.17.0",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
   }
 }
