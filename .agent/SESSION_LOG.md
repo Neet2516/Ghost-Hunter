@@ -11,4 +11,5 @@
   - Verified `pnpm -r typecheck` (all 4 packages pass cleanly).
   - Verified `apps/web` Next.js production build (`next build` succeeds).
   - Verified `apps/api` and `apps/worker` TypeScript builds.
-  - Created git commit for TASK-001 completion.
+  - Created git commits for TASK-001 completion (`69dc3b0`, `c23912d`).
+  - Pushed all commits to `origin main`.
