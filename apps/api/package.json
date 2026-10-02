@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
@@ -22,6 +25,7 @@
     "@types/node": "^20.17.0",
     "drizzle-kit": "^0.26.2",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }

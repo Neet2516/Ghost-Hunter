@@ -4,8 +4,8 @@
 |---------|-------------|--------|----------------------|
 | TASK-001 | Init monorepo (pnpm workspaces, TS config, lint, .env.example) | DONE | Verified: `pnpm -r typecheck` clean; Next.js web build succeeded; worker/api compiled cleanly |
 | TASK-002 | Shared schemas (Zod types/enums from DATA_MODEL) | DONE | Verified: complete domain schemas, enums, workflow states, and API contracts defined in `packages/shared/src/`; 14 unit tests passing with Vitest; workspace typecheck clean |
-| TASK-003 | DB + migrations (Drizzle SQLite schema) | TODO | Next task |
-| TASK-004 | API CRUD (Application endpoints + validation + error shape) | TODO | Pending TASK-003 |
+| TASK-003 | DB + migrations (Drizzle SQLite schema) | DONE | Verified: SQLite schema (`applications`, `followups`, `events`, `notifications`), indexes, Drizzle migrations generated, repository CRUD operations and cascade deletions verified via 6 integration tests in `apps/api/src/db/__tests__/db.test.ts` |
+| TASK-004 | API CRUD (Application endpoints + validation + error shape) | TODO | Next task |
 | TASK-005 | Design tokens & fonts (Tailwind/CSS tokens per DESIGN_SYSTEM) | TODO | Pending TASK-001 |
 | TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | TODO | Pending TASK-005 |
 | TASK-007 | App shell (Layouts, nav, mock states) | TODO | Pending TASK-006 |

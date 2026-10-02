@@ -13,13 +13,18 @@
 ## 2026-10-03 — Session 2
 - **Focus:** TASK-002 (Shared schemas).
 - **Actions:**
-  - Implemented modular shared schema files in `packages/shared/src/`:
-    - `constants.ts`: Task queue name, min/max follow-ups, default delays, word limits.
-    - `enums.ts`: Zod enums for statuses, sub-statuses, channels, event types, sources, and notification kinds.
-    - `models.ts`: Full Zod domain models for Application, Create/Update payloads, FollowUp, Event, Notification, and AIDraftOutput with word count & placeholder validation.
-    - `api.ts`: API request/response contracts for draft decisions, workflow state, error envelope, and model health.
-    - `index.ts`: Unified export.
-  - Added Vitest unit test suite `packages/shared/src/__tests__/schemas.test.ts`.
-  - Validated 14/14 unit tests passing.
+  - Implemented modular shared schema files in `packages/shared/src/` (`constants.ts`, `enums.ts`, `models.ts`, `api.ts`, `index.ts`).
+  - Added Vitest unit test suite `packages/shared/src/__tests__/schemas.test.ts` (14/14 passed).
   - Verified `pnpm -r typecheck` across all workspace packages cleanly.
+  - Created git commit (`43d13d9`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 3
+- **Focus:** TASK-003 (DB + migrations).
+- **Actions:**
+  - Added Drizzle ORM SQLite schema for `applications`, `followups`, `events`, and `notifications` with relational foreign keys and indexes in `apps/api/src/db/schema.ts`.
+  - Configured `drizzle.config.ts` and generated initial migration (`apps/api/drizzle/0000_faulty_richard_fisk.sql`).
+  - Implemented database factory with WAL journal mode and foreign keys pragma in `apps/api/src/db/connection.ts`.
+  - Implemented typed `DatabaseRepository` in `apps/api/src/db/crud.ts` covering applications, follow-ups, events, and notifications.
+  - Added integration test suite `apps/api/src/db/__tests__/db.test.ts` (6/6 passing).
+  - Verified clean `pnpm -r typecheck` and `pnpm test` (20/20 total tests across workspaces).
   - Ready for git commit and remote push.
