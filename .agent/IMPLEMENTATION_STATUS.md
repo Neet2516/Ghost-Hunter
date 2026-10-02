@@ -2,9 +2,9 @@
 
 | Task ID | Description | Status | Verification / Notes |
 |---------|-------------|--------|----------------------|
-| TASK-001 | Init monorepo (pnpm workspaces, TS config, lint, .env.example) | DONE | Verified: `pnpm -r typecheck` clean (all 4 packages); `apps/web` build succeeded; `apps/api` and `apps/worker` compiled cleanly; approved native build dependencies in pnpm-workspace.yaml |
-| TASK-002 | Shared schemas (Zod types/enums from DATA_MODEL) | TODO | Next task |
-| TASK-003 | DB + migrations (Drizzle SQLite schema) | TODO | Pending TASK-002 |
+| TASK-001 | Init monorepo (pnpm workspaces, TS config, lint, .env.example) | DONE | Verified: `pnpm -r typecheck` clean; Next.js web build succeeded; worker/api compiled cleanly |
+| TASK-002 | Shared schemas (Zod types/enums from DATA_MODEL) | DONE | Verified: complete domain schemas, enums, workflow states, and API contracts defined in `packages/shared/src/`; 14 unit tests passing with Vitest; workspace typecheck clean |
+| TASK-003 | DB + migrations (Drizzle SQLite schema) | TODO | Next task |
 | TASK-004 | API CRUD (Application endpoints + validation + error shape) | TODO | Pending TASK-003 |
 | TASK-005 | Design tokens & fonts (Tailwind/CSS tokens per DESIGN_SYSTEM) | TODO | Pending TASK-001 |
 | TASK-006 | Primitives (Display, Text, Button, Field, StatusChip, etc.) | TODO | Pending TASK-005 |
