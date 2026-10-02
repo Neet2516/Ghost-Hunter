@@ -1,0 +1,84 @@
+import {
+  Application,
+  CreateApplicationInput,
+  UpdateApplicationInput,
+  FollowUp,
+  Event,
+  ErrorResponse,
+} from '@ghost-hunter/shared';
+
+const API_BASE = '/api';
+
+export class ApiError extends Error {
+  constructor(
+    public code: string,
+    message: string,
+    public fields?: Record<string, string[]>
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const url = `${API_BASE}${endpoint}`;
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  const response = await fetch(url, { ...options, headers });
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const errorData = data as ErrorResponse | null;
+    throw new ApiError(
+      errorData?.error?.code || 'UNKNOWN_ERROR',
+      errorData?.error?.message || `HTTP ${response.status}`,
+      errorData?.error?.fields
+    );
+  }
+
+  return data as T;
+}
+
+export const api = {
+  // Applications CRUD
+  async listApplications(status?: string): Promise<Application[]> {
+    const query = status && status !== 'ALL' ? `?status=${encodeURIComponent(status)}` : '';
+    return request<Application[]>(`/applications${query}`);
+  },
+
+  async getApplication(id: string): Promise<Application> {
+    return request<Application>(`/applications/${id}`);
+  },
+
+  async createApplication(input: CreateApplicationInput): Promise<Application> {
+    return request<Application>('/applications', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    });
+  },
+
+  async updateApplication(id: string, input: UpdateApplicationInput): Promise<Application> {
+    return request<Application>(`/applications/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(input),
+    });
+  },
+
+  async deleteApplication(id: string): Promise<{ success: boolean; id: string }> {
+    return request<{ success: boolean; id: string }>(`/applications/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
+  // Events & FollowUps
+  async getApplicationEvents(id: string): Promise<Event[]> {
+    return request<Event[]>(`/applications/${id}/events`);
+  },
+
+  async getApplicationFollowUps(id: string): Promise<FollowUp[]> {
+    return request<FollowUp[]>(`/applications/${id}/followups`);
+  },
+};

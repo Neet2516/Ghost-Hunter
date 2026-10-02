@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Applications UI and client integration in `apps/web` (TASK-008):
+  - TanStack Query provider and typed API client wrapper in `apps/web/src/lib/api.ts` with Next.js API proxying.
+  - Applications list view (`/app/applications`) with search, filter tabs, company metadata, and status badges.
+  - Multi-step application creation wizard (`/app/applications/new`) with Company/Role info, Recruiter/Outreach context, and Cadence configuration.
+  - Application detail view (`/app/applications/[id]`) with application metadata, quick controls, follow-up history, and audit event timeline.
 - Implemented App Shell and Layout system in `apps/web` (TASK-007):
   - `AppLayout` and `AppNavbar` with active navigation tabs, model health indicator dot, notification bell with unread badge, and quick action "+ New Hunt".
   - `MarketingLayout` and `MarketingNavbar` with brand messaging and CTA.

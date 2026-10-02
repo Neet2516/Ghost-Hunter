@@ -61,4 +61,15 @@
   - Implemented `EmptyState`, `ErrorState`, and `DegradedBanner` in `apps/web/src/components/domain/`.
   - Built `/app` dashboard route with metrics counters and active sentinel stream.
   - Verified `next build` (6 static pages) and workspace typechecks clean.
-  - Ready for git commit and remote push.
+  - Created git commit (`f2beeef`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 8
+- **Focus:** TASK-008 (Applications UI).
+- **Actions:**
+  - Configured TanStack Query provider and client integration in `apps/web/src/lib/api.ts`.
+  - Added API proxy rewrite rules in `apps/web/next.config.mjs` for seamless local dev API routing.
+  - Implemented `/app/applications` with search filter, tabbed status chips, and responsive data table.
+  - Implemented `/app/applications/new` with 3-step wizard (Role & Company, Recruiter & Context, Strategy & Cadence).
+  - Implemented `/app/applications/[id]` with application detail, status bar, action buttons, follow-up log, and timeline.
+  - Verified `next build` (8 static and dynamic pages) and workspace typechecks clean.
+  - Created git commit and pushed to `origin main`.
