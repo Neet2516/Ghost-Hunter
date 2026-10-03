@@ -167,7 +167,11 @@ export async function signalCancelHunt(
 
 export async function signalDraftDecision(
   applicationId: string,
-  decision: { action: 'approve' | 'skip' | 'snooze'; editedBody?: string },
+  decision: {
+    action: 'approve' | 'skip' | 'snooze';
+    editedBody?: string;
+    snoozeDurationMs?: number;
+  },
   customClient?: Client
 ): Promise<void> {
   try {

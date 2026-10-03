@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Draft Decision Flow and Review Gate (TASK-014):
+  - Defined `draftDecisionSignal` with `action: 'approve' | 'skip' | 'snooze'`, `editedBody`, and `snoozeDurationMs`.
+  - Implemented human review gate in `ghostHunterWorkflow` with `AWAITING_REVIEW` sub-status and `DEFAULT_REVIEW_TIMEOUT_MS` (48 hours default) timer.
+  - Implemented `updateFollowUp` activity in `apps/worker/src/activities/index.ts` to update follow-up statuses (`SENT`, `SKIPPED`, `SNOOZED`, `DISCARDED_REPLY`) and edited body in SQLite.
+  - Added race guard discarding drafts with `DISCARDED_REPLY` when recruiter replies or cancellation arrives during review.
+  - Created Fastify endpoint `POST /api/applications/:id/decision` with Zod schema validation and Temporal signaling.
+  - Added time-skipping workflow unit tests for approve, skip, snooze, timeout auto-skip, and review reply interruption in `apps/worker/src/__tests__/workflow.test.ts`.
+  - Added API route test in `apps/api/src/routes/__tests__/applications-workflow.test.ts` (total 62 workspace tests passing).
 - Implemented Ollama Client and Follow-up Draft Activity (TASK-013):
   - Created prompt builder with anti-hallucination rules, recruiter first name extraction, and quarantined `<DATA>` blocks in `apps/worker/src/ollama/prompt.ts`.
   - Created Zod validation schema enforcement and markdown stripping in `validateAndParseDraft`.

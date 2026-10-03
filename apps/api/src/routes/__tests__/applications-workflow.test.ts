@@ -15,7 +15,7 @@ import { buildApp } from '../../app.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-describe('Application Workflow Endpoints (TASK-012)', () => {
+describe('Application Workflow Endpoints (TASK-012 & TASK-014)', () => {
   let testEnv: TestWorkflowEnvironment;
   let sqlite: Database.Database;
   let app: FastifyInstance;
@@ -54,14 +54,42 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
     sqlite.close();
   });
 
+  const defaultActivities = {
+    async updateApplicationStatus() {},
+    async persistEvent() {
+      return { id: 'evt-1' };
+    },
+    async notifyUser() {
+      return { id: 'notif-1' };
+    },
+    async generateFollowUpDraft(input: {
+      applicationId: string;
+      stage: number;
+      company: string;
+      role: string;
+      recruiterName: string;
+      outreachContext: string;
+    }) {
+      return {
+        draftId: 'draft-test-1',
+        stage: input.stage,
+        subject: `Follow-up ${input.stage}`,
+        body: 'Follow-up draft message',
+        source: 'gemma' as const,
+        isDegraded: false,
+      };
+    },
+    async updateFollowUp() {},
+  };
+
   const createTestApp = async (id?: string) => {
     return repo.createApplication({
       company: 'Datadog',
       role: 'Backend Engineer',
-      recruiterName: 'Alexis Le-Quoc',
-      recruiterContact: 'alexis@datadog.com',
+      recruiterName: 'Danielle Miller',
+      recruiterContact: 'danielle@datadog.com',
       outreachChannel: 'email',
-      outreachContext: 'Follow up on distributed tracing pipeline interview.',
+      outreachContext: 'Followed up on distributed tracing infrastructure team role',
       delayMs: 86400000,
       maxFollowUps: 3,
     });
@@ -72,12 +100,7 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
       connection: testEnv.nativeConnection,
       taskQueue: GHOST_HUNTER_TASK_QUEUE,
       workflowsPath: new URL('../../../../worker/src/workflows/index.ts', import.meta.url).pathname,
-      activities: {
-        async updateApplicationStatus() {},
-        async persistEvent() {
-          return { id: 'evt-1' };
-        },
-      },
+      activities: defaultActivities,
     });
 
     await worker.runUntil(async () => {
@@ -125,12 +148,7 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
       connection: testEnv.nativeConnection,
       taskQueue: GHOST_HUNTER_TASK_QUEUE,
       workflowsPath: new URL('../../../../worker/src/workflows/index.ts', import.meta.url).pathname,
-      activities: {
-        async updateApplicationStatus() {},
-        async persistEvent() {
-          return { id: 'evt-reply' };
-        },
-      },
+      activities: defaultActivities,
     });
 
     await worker.runUntil(async () => {
@@ -144,10 +162,14 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
       });
 
       // Signal Reply
+      const repliedAt = new Date().toISOString();
       const replyRes = await app.inject({
         method: 'POST',
         url: `/api/applications/${created.id}/reply`,
-        payload: { note: 'Recruiter replied on LinkedIn' },
+        payload: {
+          repliedAt,
+          note: 'Recruiter responded with Calendly link',
+        },
       });
 
       expect(replyRes.statusCode).toBe(200);
@@ -168,12 +190,7 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
       connection: testEnv.nativeConnection,
       taskQueue: GHOST_HUNTER_TASK_QUEUE,
       workflowsPath: new URL('../../../../worker/src/workflows/index.ts', import.meta.url).pathname,
-      activities: {
-        async updateApplicationStatus() {},
-        async persistEvent() {
-          return { id: 'evt-cancel' };
-        },
-      },
+      activities: defaultActivities,
     });
 
     await worker.runUntil(async () => {
@@ -203,6 +220,41 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
 
       const events = await repo.getEventsByApplicationId(created.id);
       expect(events.some((e) => e.type === 'CANCELLED')).toBe(true);
+    });
+  });
+
+  it('delivers draftDecision signal via POST /:id/decision', async () => {
+    const worker = await Worker.create({
+      connection: testEnv.nativeConnection,
+      taskQueue: GHOST_HUNTER_TASK_QUEUE,
+      workflowsPath: new URL('../../../../worker/src/workflows/index.ts', import.meta.url).pathname,
+      activities: defaultActivities,
+    });
+
+    await worker.runUntil(async () => {
+      const created = await createTestApp();
+
+      // Start workflow
+      await app.inject({
+        method: 'POST',
+        url: `/api/applications/${created.id}/start`,
+        payload: { cadenceSchedule: [100000] },
+      });
+
+      // Send decision: approve
+      const decisionRes = await app.inject({
+        method: 'POST',
+        url: `/api/applications/${created.id}/decision`,
+        payload: {
+          action: 'approve',
+          editedBody: 'Custom approved message',
+        },
+      });
+
+      expect(decisionRes.statusCode).toBe(200);
+      const json = decisionRes.json();
+      expect(json.success).toBe(true);
+      expect(json.action).toBe('approve');
     });
   });
 
@@ -241,6 +293,13 @@ describe('Application Workflow Endpoints (TASK-012)', () => {
       url: `/api/applications/${fakeId}/cancel`,
     });
     expect(cancelRes.statusCode).toBe(404);
+
+    const decisionRes = await app.inject({
+      method: 'POST',
+      url: `/api/applications/${fakeId}/decision`,
+      payload: { action: 'approve' },
+    });
+    expect(decisionRes.statusCode).toBe(404);
 
     const stateRes = await app.inject({
       method: 'GET',

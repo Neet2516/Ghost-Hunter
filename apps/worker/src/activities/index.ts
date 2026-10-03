@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
-import { ApplicationStatus, SubStatus } from '@ghost-hunter/shared';
+import { ApplicationStatus, SubStatus, FollowUpStatus } from '@ghost-hunter/shared';
 import { getDatabase } from '../db/connection.js';
-import { applications, events, notifications } from '../db/schema.js';
+import { applications, events, notifications, followups } from '../db/schema.js';
 import { randomUUID } from 'node:crypto';
 
 export interface UpdateApplicationStatusInput {
@@ -75,6 +75,27 @@ export async function notifyUser(input: NotifyUserInput): Promise<{ id: string }
     .run();
 
   return { id };
+}
+
+export interface UpdateFollowUpInput {
+  followUpId: string;
+  status: FollowUpStatus;
+  editedBody?: string | null;
+  decidedAt?: string | null;
+}
+
+export async function updateFollowUp(input: UpdateFollowUpInput): Promise<void> {
+  const { db } = getDatabase();
+  const now = new Date().toISOString();
+
+  db.update(followups)
+    .set({
+      status: input.status,
+      editedBody: input.editedBody ?? null,
+      decidedAt: input.decidedAt ?? now,
+    })
+    .where(eq(followups.id, input.followUpId))
+    .run();
 }
 
 export * from './ollama.js';

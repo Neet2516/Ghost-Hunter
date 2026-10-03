@@ -11,6 +11,7 @@ import {
   startGhostHunterWorkflow,
   signalRecruiterReplied,
   signalCancelHunt,
+  signalDraftDecision,
   queryWorkflowState,
   WorkflowConflictError,
 } from '../temporal-client/index.js';
@@ -37,6 +38,12 @@ const RecruiterRepliedBodySchema = z.object({
 const CancelHuntBodySchema = z.object({
   reason: z.string().optional(),
 }).optional();
+
+const DraftDecisionBodySchema = z.object({
+  action: z.enum(['approve', 'skip', 'snooze']),
+  editedBody: z.string().optional(),
+  snoozeDurationMs: z.number().int().positive().optional(),
+});
 
 export function registerApplicationRoutes(
   repo: DatabaseRepository,
@@ -331,6 +338,37 @@ export function registerApplicationRoutes(
           repliedAt: null,
         });
       }
+    });
+
+    // 12. Submit Draft Decision (POST /:id/decision)
+    app.post('/:id/decision', async (request, reply) => {
+      const { id } = ApplicationIdParamSchema.parse(request.params);
+      const body = DraftDecisionBodySchema.parse(request.body);
+
+      const application = await repo.getApplicationById(id);
+      if (!application) {
+        return reply.status(404).send({
+          error: {
+            code: 'NOT_FOUND',
+            message: `Application with ID ${id} not found`,
+          },
+        });
+      }
+
+      await signalDraftDecision(
+        id,
+        {
+          action: body.action,
+          editedBody: body.editedBody,
+          snoozeDurationMs: body.snoozeDurationMs,
+        },
+        temporalClient
+      );
+
+      return reply.status(200).send({
+        success: true,
+        action: body.action,
+      });
     });
   };
 }

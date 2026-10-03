@@ -129,3 +129,16 @@
   - Aligned native `better-sqlite3` and `zod` dependencies in `apps/worker`.
   - Added comprehensive test suite in `apps/worker/src/__tests__/ollama.test.ts` verifying Scenarios #7, #8, #9, and #10.
   - Verified 57 workspace tests passing, `pnpm -r typecheck` passing across all 4 packages, and Next.js web build passing cleanly.
+  - Created git commit (`9ea64cc`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 14
+- **Focus:** TASK-014 (Draft decision flow).
+- **Actions:**
+  - Implemented `draftDecisionSignal` with actions `approve`, `skip`, `snooze`, supporting `editedBody` and `snoozeDurationMs`.
+  - Wired `generateFollowUpDraft` and `updateFollowUp` activities into multi-stage cadence loop in `ghostHunterWorkflow.ts`.
+  - Implemented human review gate in `AWAITING_REVIEW` with `DEFAULT_REVIEW_TIMEOUT_MS` (48 hours) timer and auto-skip fallback.
+  - Implemented race condition checks discarding drafts (`DISCARDED_REPLY`) upon mid-review recruiter replies or cancellations.
+  - Created Fastify endpoint `POST /api/applications/:id/decision` with Zod validation and Temporal signaling.
+  - Added time-skipping workflow unit tests for draft approval, skip, snooze, timeout auto-skip, and review reply interruption in `apps/worker/src/__tests__/workflow.test.ts`.
+  - Added API route test in `apps/api/src/routes/__tests__/applications-workflow.test.ts`.
+  - Verified 62 workspace tests passing, clean typechecks across all 4 packages, and Next.js web build passing cleanly.
