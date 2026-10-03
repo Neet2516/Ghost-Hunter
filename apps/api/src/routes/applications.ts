@@ -185,16 +185,19 @@ export function registerApplicationRoutes(
       }
 
       try {
+        const isDemo = body?.isDemoMode ?? (application.delayMs < 60000);
+        const cadenceSchedule = body?.cadenceSchedule ?? (isDemo ? [20, 20, 20] : undefined);
+
         const result = await startGhostHunterWorkflow({
           applicationId: id,
           company: application.company,
           role: application.role,
           recruiterName: application.recruiterName,
           recruiterEmail: application.recruiterContact,
-          cadenceSchedule: body?.cadenceSchedule,
+          cadenceSchedule,
           maxFollowUps: body?.maxFollowUps ?? application.maxFollowUps,
           outreachContext: application.outreachContext,
-          isDemoMode: body?.isDemoMode,
+          isDemoMode: isDemo,
           customClient: temporalClient,
         });
 

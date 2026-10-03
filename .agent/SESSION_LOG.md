@@ -198,3 +198,15 @@
   - Built `CtaBanner` in `apps/web/src/components/marketing/CtaBanner.tsx` with high-contrast editorial styling and direct links to the application.
   - Assembled complete landing page in `apps/web/src/app/page.tsx` wrapped in `SmoothScrollProvider` and `MarketingLayout`.
   - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
+  - Created git commit (`fc37db6`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 20
+- **Focus:** TASK-020 (Demo mode + seed).
+- **Actions:**
+  - Added interactive Demo Mode toggle (20s delays) in `apps/web/src/components/domain/WorkflowPanel.tsx` next to the Arm Sentinel action button.
+  - Updated `apps/web/src/app/app/applications/[id]/page.tsx` to forward `isDemoMode` to `api.startHunt(id, options)`.
+  - Updated API route `POST /api/applications/:id/start` in `apps/api/src/routes/applications.ts` to automatically default cadence schedule to `[20, 20, 20]` (20 seconds) when demo mode is active.
+  - Implemented standalone CLI and programmatically invokable seed script in `scripts/seed.ts` with `--reset` support (`pnpm seed` and `pnpm seed:reset`).
+  - Pre-populated 6 rich realistic outreach records covering every status: Anthropic (`HUNTING (WAITING)` with 18s countdown), Stripe (`HUNTING (AWAITING_REVIEW)` with pending draft and unread notification), Apple (`REPLIED` with interview invitation note), Figma (`COMPLETED` with 2 sent follow-up stages), Vercel (`CANCELLED` with competing offer rationale), and Netflix (`DRAFT` ready for live demonstration with 20s delay).
+  - Added root `package.json` scripts `"seed"` and `"seed:reset"`.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.

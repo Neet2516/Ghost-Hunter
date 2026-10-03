@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Demo Mode Toggles and Database Seed Script (TASK-020):
+  - Added interactive Demo Mode toggle (20s cadence delay) in `apps/web/src/components/domain/WorkflowPanel.tsx` next to the Arm Sentinel action button.
+  - Updated `apps/web/src/app/app/applications/[id]/page.tsx` to pass `isDemoMode` to `api.startHunt(id, options)`.
+  - Updated API route `POST /api/applications/:id/start` to automatically set cadence schedule to `[20, 20, 20]` (20 seconds) when demo mode is active and custom cadence is not provided.
+  - Implemented standalone CLI and programmatically invokable seed script in `scripts/seed.ts` with `--reset` support (`pnpm seed` and `pnpm seed:reset`).
+  - Pre-populated 6 rich realistic outreach records covering every status:
+    1. Anthropic (`HUNTING (WAITING)`, 18s countdown remaining)
+    2. Stripe (`HUNTING (AWAITING_REVIEW)`, pending draft + unread notification)
+    3. Apple (`REPLIED`, technical screen offer from recruiter)
+    4. Figma (`COMPLETED`, 2 follow-up stages approved and sent)
+    5. Vercel (`CANCELLED`, user accepted competing offer)
+    6. Netflix (`DRAFT`, ready for live "Arm Sentinel" demo with 20s delay)
+  - Verified with 69 workspace tests, workspace typecheck, and Next.js production build.
 - Implemented Landing Page & Motion System (TASK-019):
   - Installed `lenis` and `gsap` for marketing interactions.
   - Implemented `SmoothScrollProvider` in `apps/web/src/components/marketing/SmoothScrollProvider.tsx` with Lenis smooth scrolling (lerp 0.08) disabled on reduced motion, system media query sync, and user toggle context.

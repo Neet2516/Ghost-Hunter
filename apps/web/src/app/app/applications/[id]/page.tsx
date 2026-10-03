@@ -71,7 +71,7 @@ export default function ApplicationDetailPage() {
   });
 
   const startMutation = useMutation({
-    mutationFn: () => api.startHunt(id),
+    mutationFn: (options?: { isDemoMode?: boolean }) => api.startHunt(id, options),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
@@ -188,7 +188,7 @@ export default function ApplicationDetailPage() {
       {/* Temporal Sentinel Orbit Telemetry & Controls */}
       <WorkflowPanel
         application={application}
-        onStartHunt={() => startMutation.mutate()}
+        onStartHunt={(options) => startMutation.mutate(options)}
         onMarkReplied={() => replyMutation.mutate()}
         onCancelHunt={() => cancelMutation.mutate()}
         isStarting={startMutation.isPending}

@@ -14,11 +14,12 @@ import {
   Server,
   Layers,
   Timer,
+  Zap,
 } from 'lucide-react';
 
 export interface WorkflowPanelProps {
   application: Application;
-  onStartHunt?: () => void;
+  onStartHunt?: (options?: { isDemoMode?: boolean }) => void;
   onMarkReplied?: () => void;
   onCancelHunt?: () => void;
   isStarting?: boolean;
@@ -36,6 +37,7 @@ export function WorkflowPanel({
   isCancelling = false,
 }: WorkflowPanelProps) {
   const [copied, setCopied] = useState(false);
+  const [demoMode, setDemoMode] = useState(application.delayMs < 60000);
 
   const workflowId = application.workflowId || `gh-${application.id}`;
 
@@ -64,15 +66,30 @@ export function WorkflowPanel({
         {/* Orbit Action Buttons */}
         <div className="flex flex-wrap items-center gap-3">
           {application.status === 'DRAFT' && onStartHunt && (
-            <Button
-              variant="signal"
-              size="sm"
-              onClick={onStartHunt}
-              isLoading={isStarting}
-              leftIcon={<Play className="w-3.5 h-3.5" />}
-            >
-              Arm Sentinel
-            </Button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDemoMode(!demoMode)}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 font-mono text-xs font-bold uppercase transition-all hairline ${
+                  demoMode
+                    ? 'bg-signal/15 text-signal border-signal shadow-sm'
+                    : 'bg-paper text-ash border-ash/40 hover:text-ink'
+                }`}
+                title={demoMode ? 'Demo Mode Active: 20s delays' : 'Click to enable 20s Demo Mode'}
+              >
+                <Zap className={`w-3.5 h-3.5 ${demoMode ? 'text-signal fill-signal/30' : 'text-ash'}`} />
+                <span>Demo Mode (20s)</span>
+              </button>
+              <Button
+                variant="signal"
+                size="sm"
+                onClick={() => onStartHunt({ isDemoMode: demoMode })}
+                isLoading={isStarting}
+                leftIcon={<Play className="w-3.5 h-3.5" />}
+              >
+                Arm Sentinel
+              </Button>
+            </div>
           )}
 
           {application.status === 'HUNTING' && (
