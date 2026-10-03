@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { Worker, NativeConnection } from '@temporalio/worker';
 import { GHOST_HUNTER_TASK_QUEUE } from '@ghost-hunter/shared';
 import * as activities from './activities/index.js';
@@ -13,7 +14,10 @@ export async function createWorker(customConnection?: NativeConnection): Promise
       address,
     }));
 
-  const workflowsPath = new URL('./workflows/index.js', import.meta.url).pathname;
+  let workflowsPath = new URL('./workflows/index.ts', import.meta.url).pathname;
+  if (!fs.existsSync(workflowsPath)) {
+    workflowsPath = new URL('./workflows/index.js', import.meta.url).pathname;
+  }
 
   const worker = await Worker.create({
     connection,
@@ -31,11 +35,22 @@ export async function run(): Promise<void> {
   const address = process.env.TEMPORAL_ADDRESS || 'localhost:7233';
 
   console.log(`Starting Ghost-Hunter worker at ${address}, listening on queue: ${taskQueue}`);
-  const worker = await createWorker();
+
+  let worker: Worker | null = null;
+  while (!worker) {
+    try {
+      worker = await createWorker();
+    } catch (err: any) {
+      console.log(`Temporal server not ready at ${address} (${err.message}), retrying in 2s...`);
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
+
+  console.log(`Ghost-Hunter worker successfully connected to Temporal at ${address}`);
 
   const shutdown = () => {
     console.log('Shutting down Ghost-Hunter worker...');
-    worker.shutdown();
+    worker?.shutdown();
   };
 
   process.on('SIGINT', shutdown);
