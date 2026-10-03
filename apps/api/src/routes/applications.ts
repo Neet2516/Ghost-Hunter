@@ -15,6 +15,7 @@ import {
   queryWorkflowState,
   WorkflowConflictError,
 } from '../temporal-client/index.js';
+import { EventBus, globalEventBus } from '../events/bus.js';
 
 const ApplicationIdParamSchema = z.object({
   id: z.string().uuid('Application ID must be a valid UUID'),
@@ -47,13 +48,15 @@ const DraftDecisionBodySchema = z.object({
 
 export function registerApplicationRoutes(
   repo: DatabaseRepository,
-  temporalClient?: Client
+  temporalClient?: Client,
+  eventBus: EventBus = globalEventBus
 ): FastifyPluginAsync {
   return async function (app: FastifyInstance) {
     // 1. Create Application
     app.post('/', async (request, reply) => {
       const validatedBody = CreateApplicationSchema.parse(request.body);
       const application = await repo.createApplication(validatedBody);
+      eventBus.broadcast({ type: 'APPLICATION_CREATED', data: application });
       return reply.status(201).send(application);
     });
 
@@ -97,6 +100,7 @@ export function registerApplicationRoutes(
       }
 
       const updated = await repo.updateApplication(id, validatedBody);
+      eventBus.broadcast({ type: 'APPLICATION_UPDATED', data: updated });
       return reply.status(200).send(updated);
     });
 
@@ -115,6 +119,7 @@ export function registerApplicationRoutes(
       }
 
       await repo.deleteApplication(id);
+      eventBus.broadcast({ type: 'APPLICATION_DELETED', data: { id } });
       return reply.status(200).send({ success: true, id });
     });
 
@@ -206,6 +211,11 @@ export function registerApplicationRoutes(
           startedAt: new Date().toISOString(),
         });
 
+        eventBus.broadcast({
+          type: 'HUNT_STARTED',
+          data: { applicationId: id, workflowId: result.workflowId },
+        });
+
         return reply.status(200).send({
           success: true,
           workflowId: result.workflowId,
@@ -265,6 +275,11 @@ export function registerApplicationRoutes(
         note: body?.note,
       });
 
+      eventBus.broadcast({
+        type: 'REPLY_SIGNAL',
+        data: { applicationId: id, repliedAt },
+      });
+
       return reply.status(200).send({
         success: true,
         status: 'REPLIED',
@@ -303,6 +318,11 @@ export function registerApplicationRoutes(
 
       // Persist event
       await repo.logEvent(id, 'CANCELLED', { reason });
+
+      eventBus.broadcast({
+        type: 'CANCELLED',
+        data: { applicationId: id, reason },
+      });
 
       return reply.status(200).send({
         success: true,
@@ -364,6 +384,11 @@ export function registerApplicationRoutes(
         },
         temporalClient
       );
+
+      eventBus.broadcast({
+        type: 'DRAFT_DECISION',
+        data: { applicationId: id, action: body.action },
+      });
 
       return reply.status(200).send({
         success: true,

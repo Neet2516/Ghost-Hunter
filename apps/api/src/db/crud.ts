@@ -182,9 +182,10 @@ export class DatabaseRepository {
   async createNotification(
     applicationId: string,
     kind: NotificationKind,
-    message: string
+    message: string,
+    createdAt?: string
   ): Promise<NotificationRow> {
-    const now = new Date().toISOString();
+    const now = createdAt || new Date().toISOString();
     const id = randomUUID();
 
     const row: InsertNotificationRow = {

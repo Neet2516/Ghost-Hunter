@@ -4,6 +4,7 @@ import {
   UpdateApplicationInput,
   FollowUp,
   Event,
+  Notification,
   ErrorResponse,
 } from '@ghost-hunter/shared';
 
@@ -135,5 +136,23 @@ export const api = {
 
   async getWorkflowState(id: string): Promise<any> {
     return request<any>(`/applications/${id}/state`);
+  },
+
+  async getNotifications(unreadOnly?: boolean): Promise<Notification[]> {
+    const query = unreadOnly ? '?unreadOnly=true' : '';
+    return request<Notification[]>(`/notifications${query}`);
+  },
+
+  async markNotificationsRead(payload: {
+    notificationIds?: string[];
+    all?: boolean;
+  }): Promise<{ success: boolean; count: number }> {
+    return request<{ success: boolean; count: number }>(
+      '/notifications/read',
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }
+    );
   },
 };

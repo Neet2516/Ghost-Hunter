@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Notifications and SSE Event Stream (TASK-016):
+  - Created typed `EventBus` singleton in `apps/api/src/events/bus.ts` and SSE endpoints `GET /api/events` and `GET /api/events/stream` with 15-second heartbeat pings.
+  - Implemented Notification endpoints: `GET /api/notifications` (with `?unreadOnly=true` filtering) and `POST/PATCH /api/notifications/read` (supporting individual IDs and `all: true`).
+  - Wired real-time event broadcasting into application CRUD, hunt lifecycle (`start`, `reply`, `cancel`), and draft decision routes.
+  - Aligned worker notifications schema and updated `notifyUser` activity to insert `DRAFT_READY` notifications; wrapped in try-catch in `ghostHunterWorkflow.ts` to guarantee Scenario 11 compliance (non-fatal, logged, workflow continues).
+  - Added unit and integration tests in `apps/api/src/routes/__tests__/notifications.test.ts` and workflow unit test in `apps/worker/src/__tests__/workflow.test.ts` (69 total tests passing).
+  - Implemented `useEventStream` hook in `apps/web` with auto-reconnection, query cache invalidation, and HTML5 desktop browser notifications.
+  - Implemented `/app/notifications` notifications feed ledger page with unread filter, mark-all-read action, and application jump links.
+  - Connected live unread counter badge and background SSE connection to `AppNavbar`.
 - Implemented Draft Review UI and Decision Actions (TASK-015):
   - Created `StreamText` typewriter character streaming component in `apps/web/src/components/animation/StreamText.tsx` with reduced-motion support and instant click reveal.
   - Implemented `DraftReviewPanel` in `apps/web/src/components/domain/DraftReviewPanel.tsx` with stage badge, fallback template alert, real-time word counter (120 words limit), Stream vs Edit toggle, clipboard copy, and decision action buttons (Approve & Send, Skip Stage, Snooze 24h).

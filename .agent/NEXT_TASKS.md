@@ -1,14 +1,16 @@
 # Next Tasks — Ghost-Hunter
 
 ## Current Task:
-- **TASK-016: Notifications + SSE**
-  - Implement Fastify notification endpoints (`GET /api/notifications`, `PATCH /api/notifications/read`).
-  - Implement SSE endpoint `GET /api/events/stream` with heartbeat and event bus.
-  - Implement `notifyUser` activity proxy and DB event emission.
-  - Implement `useEventStream` hook in `apps/web` with automatic TanStack Query invalidation.
-  - Implement `/app/notifications` page and `AppNavbar` unread notification counter & desktop notification prompt.
+- **TASK-017: Workflow UI**
+  - Implement `TrailTimeline` multi-stage timeline nodes (`DONE`, `ACTIVE`, `WAITING`, `SKIPPED`).
+  - Implement `CountdownMono` high-precision cadence monospace countdown timer.
+  - Implement `WorkflowPanel` temporal sentinel telemetry display (Workflow ID, Task Queue, run status, next timer).
+  - Implement `ModelStatus` component displaying real-time local Gemma/Ollama status.
+  - Implement `DegradedBanner` displaying graceful offline/template state warnings.
+  - Integrate into Application detail view (`/app/applications/[id]`) and Dashboard.
 
 ## Immediately Following Tasks:
-1. **TASK-017: Workflow UI**
-   - Implement `TrailTimeline`, `CountdownMono`, `WorkflowPanel`, and `ModelStatus`.
-   - Integrate into `/app/applications/[id]` and dashboard.
+1. **TASK-018: Chaos/recovery tests**
+   - Implement test scripts for Scenarios #5 & #6 (Worker restart, Temporal server restart).
+   - Document recovery and zero-loss guarantees.
+

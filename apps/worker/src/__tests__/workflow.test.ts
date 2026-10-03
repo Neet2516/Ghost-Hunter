@@ -472,5 +472,62 @@ describe('GhostHunterWorkflow (TASK-010, TASK-011 & TASK-014)', () => {
       expect(replyEvent).toBeDefined();
       expect(replyEvent?.payload.draftDiscarded).toBe(true);
     });
+
+    it('Scenario 11: notification failure is non-fatal; logged; workflow continues', async () => {
+      const statusUpdates: Array<{ status: ApplicationStatus; subStatus?: SubStatus | null }> = [];
+      const recordedEvents: Array<{ type: string; payload: Record<string, unknown> }> = [];
+      const followUpStatuses: Array<{ followUpId: string; status: FollowUpStatus; editedBody?: string | null }> = [];
+
+      const mockActivities = {
+        ...createMockActivities(statusUpdates as any, recordedEvents, followUpStatuses),
+        async notifyUser() {
+          throw new Error('Simulated notification service failure (Scenario 11)');
+        },
+      };
+
+      const worker = await Worker.create({
+        connection: testEnv.nativeConnection,
+        taskQueue: GHOST_HUNTER_TASK_QUEUE,
+        workflowsPath: new URL('../workflows/index.ts', import.meta.url).pathname,
+        activities: mockActivities,
+      });
+
+      await worker.runUntil(async () => {
+        const handle = await testEnv.client.workflow.start('ghostHunterWorkflow', {
+          taskQueue: GHOST_HUNTER_TASK_QUEUE,
+          workflowId: 'test-wf-scenario-11',
+          args: [
+            {
+              applicationId: 'app-scenario-11',
+              company: 'Vercel',
+              role: 'Product Engineer',
+              cadenceSchedule: [0],
+              maxFollowUps: 1,
+              reviewTimeoutMs: 100000,
+            },
+          ],
+        });
+
+        // Wait until workflow enters AWAITING_REVIEW despite notifyUser throwing
+        let state = await handle.query(getStateQuery);
+        while (state.subStatus !== 'AWAITING_REVIEW') {
+          await new Promise((r) => setTimeout(r, 20));
+          state = await handle.query(getStateQuery);
+        }
+
+        expect(state.subStatus).toBe('AWAITING_REVIEW');
+
+        // Approve draft
+        await handle.signal(draftDecisionSignal, {
+          action: 'approve',
+        });
+
+        const result = await handle.result();
+        expect(result).toBe('COMPLETED');
+      });
+
+      const approvedFollowUp = followUpStatuses.find((f) => f.status === 'SENT');
+      expect(approvedFollowUp).toBeDefined();
+    });
   });
 });

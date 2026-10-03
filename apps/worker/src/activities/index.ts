@@ -54,7 +54,8 @@ export async function persistEvent(input: PersistEventInput): Promise<{ id: stri
 
 export interface NotifyUserInput {
   applicationId: string;
-  title: string;
+  kind?: string;
+  title?: string;
   message: string;
 }
 
@@ -62,14 +63,15 @@ export async function notifyUser(input: NotifyUserInput): Promise<{ id: string }
   const { db } = getDatabase();
   const id = randomUUID();
   const now = new Date().toISOString();
+  const kind = input.kind || 'DRAFT_READY';
 
   db.insert(notifications)
     .values({
       id,
       applicationId: input.applicationId,
-      title: input.title,
+      kind,
       message: input.message,
-      read: false,
+      readAt: null,
       createdAt: now,
     })
     .run();

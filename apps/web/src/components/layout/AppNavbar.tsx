@@ -3,8 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { Bell, Plus, Radio, Layers, Settings, Activity } from 'lucide-react';
 import { Button } from '@/components/primitives';
+import { api } from '@/lib/api';
+import { useEventStream } from '@/hooks/useEventStream';
 
 export interface AppNavbarProps {
   modelStatus?: 'ok' | 'degraded' | 'offline';
@@ -13,9 +16,21 @@ export interface AppNavbarProps {
 
 export function AppNavbar({
   modelStatus = 'ok',
-  unreadNotificationsCount = 0,
+  unreadNotificationsCount: initialUnreadCount,
 }: AppNavbarProps) {
   const pathname = usePathname();
+  const { isConnected } = useEventStream();
+
+  const { data: notifications } = useQuery({
+    queryKey: ['notifications', 'unread'],
+    queryFn: () => api.getNotifications(true),
+    refetchInterval: 30000,
+  });
+
+  const unreadNotificationsCount =
+    initialUnreadCount !== undefined
+      ? initialUnreadCount
+      : notifications?.length ?? 0;
 
   const navLinks = [
     { label: 'Dashboard', href: '/app', icon: Activity },

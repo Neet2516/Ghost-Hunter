@@ -69,9 +69,9 @@ export const notifications = sqliteTable(
     applicationId: text('application_id')
       .notNull()
       .references(() => applications.id, { onDelete: 'cascade' }),
-    title: text('title').notNull(),
+    kind: text('kind').notNull(),
     message: text('message').notNull(),
-    read: integer('read', { mode: 'boolean' }).notNull().default(false),
+    readAt: text('read_at'),
     createdAt: text('created_at').notNull(),
   },
   (table) => ({

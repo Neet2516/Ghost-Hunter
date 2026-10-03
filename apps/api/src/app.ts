@@ -5,10 +5,14 @@ import { Client } from '@temporalio/client';
 import { errorHandler } from './middleware/errors.js';
 import { DatabaseRepository, getDatabase } from './db/index.js';
 import { registerApplicationRoutes } from './routes/applications.js';
+import { registerNotificationRoutes } from './routes/notifications.js';
+import { registerEventRoutes } from './routes/events.js';
+import { EventBus, globalEventBus } from './events/bus.js';
 
 export interface AppOptions {
   repo?: DatabaseRepository;
   temporalClient?: Client;
+  eventBus?: EventBus;
   logger?: boolean;
 }
 
@@ -25,8 +29,9 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     origin: process.env.WEB_ORIGIN || 'http://localhost:3000',
   });
 
-  // Database Repository
+  // Database Repository & EventBus
   const repo = options.repo || new DatabaseRepository(getDatabase().db);
+  const eventBus = options.eventBus || globalEventBus;
 
   // Health checks
   const healthHandler = async () => ({
@@ -39,8 +44,18 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
   app.get('/api/health', healthHandler);
 
   // Application CRUD & Workflow routes
-  await app.register(registerApplicationRoutes(repo, options.temporalClient), {
+  await app.register(registerApplicationRoutes(repo, options.temporalClient, eventBus), {
     prefix: '/api/applications',
+  });
+
+  // Notifications routes
+  await app.register(registerNotificationRoutes(repo, eventBus), {
+    prefix: '/api/notifications',
+  });
+
+  // Server-Sent Events (SSE) routes
+  await app.register(registerEventRoutes(eventBus), {
+    prefix: '/api/events',
   });
 
   return app;

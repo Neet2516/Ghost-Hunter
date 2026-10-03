@@ -4,6 +4,7 @@ import {
   setHandler,
   condition,
   proxyActivities,
+  log,
 } from '@temporalio/workflow';
 import {
   ApplicationStatus,
@@ -444,11 +445,15 @@ export async function ghostHunterWorkflow(
       nextActionAt,
     });
 
-    await notifyUser({
-      applicationId: input.applicationId,
-      title: 'Follow-Up Draft Ready',
-      message: `Follow-up draft ready for ${input.role} at ${input.company} (Stage ${stage})`,
-    });
+    try {
+      await notifyUser({
+        applicationId: input.applicationId,
+        title: 'Follow-Up Draft Ready',
+        message: `Follow-up draft ready for ${input.role} at ${input.company} (Stage ${stage})`,
+      });
+    } catch (err: unknown) {
+      log.warn(`notifyUser failed (non-fatal, continuing workflow): ${err}`);
+    }
 
     let reviewResolved = false;
     while (!reviewResolved) {

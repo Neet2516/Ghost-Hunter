@@ -149,5 +149,18 @@
   - Implemented `DraftReviewPanel` in `apps/web/src/components/domain/DraftReviewPanel.tsx` with stage indicator, Gemma / Template source badges, live word counter (120 words maximum), Stream View vs Edit Text mode toggle, clipboard copy, and action buttons (`Approve & Send`, `Skip Stage`, `Snooze 24h`).
   - Added typed TanStack Query client mutations in `apps/web/src/lib/api.ts` (`startHunt`, `replyHunt`, `cancelHunt`, `submitDecision`, `getWorkflowState`).
   - Integrated `DraftReviewPanel` and Sentinel orbit lifecycle controls into Application detail view (`/app/applications/[id]/page.tsx`).
-  - Cleaned up internal shared package module resolution for bundler compatibility.
   - Verified 62 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 8 static pages.
+  - Created git commit (`a5d0127`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 16
+- **Focus:** TASK-016 (Notifications + SSE).
+- **Actions:**
+  - Built typed `EventBus` singleton in `apps/api/src/events/bus.ts` and SSE endpoint `GET /api/events` with heartbeat pings every 15s.
+  - Built Fastify notification routes `GET /api/notifications` and `POST/PATCH /api/notifications/read`.
+  - Wired real-time event broadcasting into application mutations and workflow signals.
+  - Aligned worker notifications schema and updated `notifyUser` activity to insert `DRAFT_READY` notifications; wrapped in try-catch in `ghostHunterWorkflow.ts` to guarantee Scenario 11 compliance (non-fatal, logged, workflow continues).
+  - Added unit and integration tests in `apps/api/src/routes/__tests__/notifications.test.ts` and workflow unit test in `apps/worker/src/__tests__/workflow.test.ts` (69 total tests passing).
+  - Implemented `useEventStream` hook in `apps/web` with auto-reconnection, query cache invalidation, and HTML5 desktop browser notifications.
+  - Implemented `/app/notifications` notifications feed ledger page with unread filter, mark-all-read action, and application jump links.
+  - Connected live unread counter badge and background SSE connection to `AppNavbar`.
+  - Verified 69 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 9 static pages.
