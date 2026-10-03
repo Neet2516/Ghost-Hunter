@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ApplicationStatus, SubStatus, FollowUpDecisionAction } from './enums.js';
+import { ApplicationStatus, SubStatus, FollowUpDecisionAction } from './enums';
 
 // Standard API Error format: { error: { code, message, fields? } }
 export const ErrorResponseSchema = z.object({

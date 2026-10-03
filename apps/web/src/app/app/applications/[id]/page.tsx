@@ -13,7 +13,7 @@ import {
   MonoData,
   Hairline,
 } from '@/components/primitives';
-import { ErrorState } from '@/components/domain';
+import { ErrorState, DraftReviewPanel } from '@/components/domain';
 import {
   ArrowLeft,
   Clock,
@@ -64,6 +64,49 @@ export default function ApplicationDetailPage() {
       router.push('/app/applications');
     },
   });
+
+  const startMutation = useMutation({
+    mutationFn: () => api.startHunt(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['application', id] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
+      queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+  });
+
+  const replyMutation = useMutation({
+    mutationFn: () => api.replyHunt(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['application', id] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
+      queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+  });
+
+  const cancelMutation = useMutation({
+    mutationFn: () => api.cancelHunt(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['application', id] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
+      queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+  });
+
+  const decisionMutation = useMutation({
+    mutationFn: (payload: { action: 'approve' | 'skip' | 'snooze'; editedBody?: string; snoozeDurationMs?: number }) =>
+      api.submitDecision(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['application', id] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
+      queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
+      queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+  });
+
+  const pendingDraft = followups?.find((f) => f.status === 'READY');
 
   if (isLoading) {
     return (
@@ -146,6 +189,8 @@ export default function ApplicationDetailPage() {
           <Text variant="body" className="text-sm text-ash">
             {application.status === 'DRAFT'
               ? 'Sentinel is in DRAFT state. Arming it launches the durable Temporal workflow.'
+              : application.subStatus === 'AWAITING_REVIEW'
+              ? 'Stage follow-up draft is waiting for human approval.'
               : application.status === 'HUNTING'
               ? 'Workflow is active and durably sleeping until next cadence check.'
               : application.status === 'REPLIED'
@@ -156,22 +201,65 @@ export default function ApplicationDetailPage() {
 
         <div className="flex flex-wrap items-center gap-3">
           {application.status === 'DRAFT' && (
-            <Button variant="signal" size="md" leftIcon={<Play className="w-4 h-4" />}>
+            <Button
+              variant="signal"
+              size="md"
+              onClick={() => startMutation.mutate()}
+              isLoading={startMutation.isPending}
+              leftIcon={<Play className="w-4 h-4" />}
+            >
               Arm Sentinel
             </Button>
           )}
           {application.status === 'HUNTING' && (
             <>
-              <Button variant="secondary" size="sm" leftIcon={<CheckCircle2 className="w-4 h-4 text-moss" />}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => replyMutation.mutate()}
+                isLoading={replyMutation.isPending}
+                leftIcon={<CheckCircle2 className="w-4 h-4 text-moss" />}
+              >
                 Mark Replied
               </Button>
-              <Button variant="ghost" size="sm" leftIcon={<XCircle className="w-4 h-4 text-ash" />}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => cancelMutation.mutate()}
+                isLoading={cancelMutation.isPending}
+                leftIcon={<XCircle className="w-4 h-4 text-ash" />}
+              >
                 Cancel Hunt
               </Button>
             </>
           )}
         </div>
       </div>
+
+      {/* Draft Review Panel (when awaiting review or pending draft exists) */}
+      {pendingDraft && (
+        <DraftReviewPanel
+          followUp={pendingDraft}
+          onApprove={async (editedBody) => {
+            await decisionMutation.mutateAsync({
+              action: 'approve',
+              editedBody,
+            });
+          }}
+          onSkip={async () => {
+            await decisionMutation.mutateAsync({
+              action: 'skip',
+            });
+          }}
+          onSnooze={async (durationMs) => {
+            await decisionMutation.mutateAsync({
+              action: 'snooze',
+              snoozeDurationMs: durationMs || 24 * 60 * 60 * 1000,
+            });
+          }}
+          isSubmitting={decisionMutation.isPending}
+        />
+      )}
 
       {/* Grid: Left Context details, Right Cadence Status */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8">

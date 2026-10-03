@@ -81,4 +81,59 @@ export const api = {
   async getApplicationFollowUps(id: string): Promise<FollowUp[]> {
     return request<FollowUp[]>(`/applications/${id}/followups`);
   },
+
+  // Workflow & Decision Actions
+  async startHunt(
+    id: string,
+    options?: { cadenceSchedule?: number[]; maxFollowUps?: number; isDemoMode?: boolean }
+  ): Promise<{ success: boolean; workflowId: string; status: string }> {
+    return request<{ success: boolean; workflowId: string; status: string }>(
+      `/applications/${id}/start`,
+      {
+        method: 'POST',
+        body: JSON.stringify(options || {}),
+      }
+    );
+  },
+
+  async replyHunt(
+    id: string,
+    payload?: { repliedAt?: string; note?: string }
+  ): Promise<{ success: boolean; status: string }> {
+    return request<{ success: boolean; status: string }>(`/applications/${id}/reply`, {
+      method: 'POST',
+      body: JSON.stringify(payload || {}),
+    });
+  },
+
+  async cancelHunt(
+    id: string,
+    payload?: { reason?: string }
+  ): Promise<{ success: boolean; status: string }> {
+    return request<{ success: boolean; status: string }>(`/applications/${id}/cancel`, {
+      method: 'POST',
+      body: JSON.stringify(payload || {}),
+    });
+  },
+
+  async submitDecision(
+    id: string,
+    payload: {
+      action: 'approve' | 'skip' | 'snooze';
+      editedBody?: string;
+      snoozeDurationMs?: number;
+    }
+  ): Promise<{ success: boolean; action: string }> {
+    return request<{ success: boolean; action: string }>(
+      `/applications/${id}/decision`,
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }
+    );
+  },
+
+  async getWorkflowState(id: string): Promise<any> {
+    return request<any>(`/applications/${id}/state`);
+  },
 };

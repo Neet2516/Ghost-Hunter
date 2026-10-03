@@ -140,5 +140,14 @@
   - Implemented race condition checks discarding drafts (`DISCARDED_REPLY`) upon mid-review recruiter replies or cancellations.
   - Created Fastify endpoint `POST /api/applications/:id/decision` with Zod validation and Temporal signaling.
   - Added time-skipping workflow unit tests for draft approval, skip, snooze, timeout auto-skip, and review reply interruption in `apps/worker/src/__tests__/workflow.test.ts`.
-  - Added API route test in `apps/api/src/routes/__tests__/applications-workflow.test.ts`.
-  - Verified 62 workspace tests passing, clean typechecks across all 4 packages, and Next.js web build passing cleanly.
+  - Created git commit (`b13c934`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 15
+- **Focus:** TASK-015 (Draft review UI).
+- **Actions:**
+  - Implemented `StreamText` typewriter character streaming animation component with reduced-motion preferences in `apps/web/src/components/animation/StreamText.tsx`.
+  - Implemented `DraftReviewPanel` in `apps/web/src/components/domain/DraftReviewPanel.tsx` with stage indicator, Gemma / Template source badges, live word counter (120 words maximum), Stream View vs Edit Text mode toggle, clipboard copy, and action buttons (`Approve & Send`, `Skip Stage`, `Snooze 24h`).
+  - Added typed TanStack Query client mutations in `apps/web/src/lib/api.ts` (`startHunt`, `replyHunt`, `cancelHunt`, `submitDecision`, `getWorkflowState`).
+  - Integrated `DraftReviewPanel` and Sentinel orbit lifecycle controls into Application detail view (`/app/applications/[id]/page.tsx`).
+  - Cleaned up internal shared package module resolution for bundler compatibility.
+  - Verified 62 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 8 static pages.

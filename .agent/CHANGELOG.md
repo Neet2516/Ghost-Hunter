@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Draft Review UI and Decision Actions (TASK-015):
+  - Created `StreamText` typewriter character streaming component in `apps/web/src/components/animation/StreamText.tsx` with reduced-motion support and instant click reveal.
+  - Implemented `DraftReviewPanel` in `apps/web/src/components/domain/DraftReviewPanel.tsx` with stage badge, fallback template alert, real-time word counter (120 words limit), Stream vs Edit toggle, clipboard copy, and decision action buttons (Approve & Send, Skip Stage, Snooze 24h).
+  - Integrated `DraftReviewPanel` and Sentinel orbit lifecycle controls into Application detail view (`/app/applications/[id]`).
+  - Added TanStack Query mutations for `startHunt`, `replyHunt`, `cancelHunt`, and `submitDecision` with query cache invalidation.
+  - Verified with 62 unit/workflow tests, workspace typecheck, and Next.js production build.
 - Implemented Draft Decision Flow and Review Gate (TASK-014):
   - Defined `draftDecisionSignal` with `action: 'approve' | 'skip' | 'snooze'`, `editedBody`, and `snoozeDurationMs`.
   - Implemented human review gate in `ghostHunterWorkflow` with `AWAITING_REVIEW` sub-status and `DEFAULT_REVIEW_TIMEOUT_MS` (48 hours default) timer.

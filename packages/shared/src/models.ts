@@ -7,13 +7,13 @@ import {
   OutreachChannel,
   EventType,
   NotificationKind
-} from './enums.js';
+} from './enums';
 import {
   MIN_FOLLOWUPS,
   MAX_FOLLOWUPS,
   DEFAULT_FOLLOWUP_DELAY_MS,
   MAX_DRAFT_WORDS
-} from './constants.js';
+} from './constants';
 
 // Regex detecting placeholder tokens like [Name], [Company], <Name>, {Company}
 export const PLACEHOLDER_TOKEN_REGEX = /\[[a-zA-Z0-9_\s-]+\]|\<[a-zA-Z0-9_\s-]+\>|\{[a-zA-Z0-9_\s-]+\}/;
