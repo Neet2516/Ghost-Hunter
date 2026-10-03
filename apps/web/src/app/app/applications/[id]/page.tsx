@@ -215,21 +215,33 @@ export default function ApplicationDetailPage() {
         <DraftReviewPanel
           followUp={pendingDraft}
           onApprove={async (editedBody) => {
-            await decisionMutation.mutateAsync({
-              action: 'approve',
-              editedBody,
-            });
+            try {
+              await decisionMutation.mutateAsync({
+                action: 'approve',
+                editedBody,
+              });
+            } catch {
+              // Notification handled via decisionMutation.onError toast
+            }
           }}
           onSkip={async () => {
-            await decisionMutation.mutateAsync({
-              action: 'skip',
-            });
+            try {
+              await decisionMutation.mutateAsync({
+                action: 'skip',
+              });
+            } catch {
+              // Notification handled via decisionMutation.onError toast
+            }
           }}
           onSnooze={async (durationMs) => {
-            await decisionMutation.mutateAsync({
-              action: 'snooze',
-              snoozeDurationMs: durationMs || 24 * 60 * 60 * 1000,
-            });
+            try {
+              await decisionMutation.mutateAsync({
+                action: 'snooze',
+                snoozeDurationMs: durationMs || 24 * 60 * 60 * 1000,
+              });
+            } catch {
+              // Notification handled via decisionMutation.onError toast
+            }
           }}
           isSubmitting={decisionMutation.isPending}
         />

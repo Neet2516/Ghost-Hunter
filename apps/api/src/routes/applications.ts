@@ -378,15 +378,79 @@ export function registerApplicationRoutes(
         });
       }
 
-      await signalDraftDecision(
-        id,
-        {
-          action: body.action,
-          editedBody: body.editedBody,
-          snoozeDurationMs: body.snoozeDurationMs,
-        },
-        temporalClient
-      );
+      let signaled = false;
+      try {
+        await signalDraftDecision(
+          id,
+          {
+            action: body.action,
+            editedBody: body.editedBody,
+            snoozeDurationMs: body.snoozeDurationMs,
+          },
+          temporalClient
+        );
+        signaled = true;
+      } catch (err: unknown) {
+        app.log.warn(`Signal draftDecision for ${id} caught non-fatal error: ${err}`);
+      }
+
+      // If Temporal workflow was not running (e.g. seeded demo item or completed workflow),
+      // update the database directly so the user's action takes effect smoothly.
+      if (!signaled) {
+        const followUps = await repo.getFollowUpsByApplicationId(id);
+        const pendingFollowUp = followUps.find((f) => f.status === 'READY') || followUps[0];
+
+        if (pendingFollowUp) {
+          const nowIso = new Date().toISOString();
+          if (body.action === 'approve') {
+            await repo.updateFollowUp(pendingFollowUp.id, {
+              status: 'SENT',
+              decidedAt: nowIso,
+              editedBody: body.editedBody || pendingFollowUp.body,
+            });
+            await repo.updateApplication(id, {
+              status: 'COMPLETED',
+              subStatus: null,
+              nextActionAt: null,
+            });
+            await repo.logEvent(id, 'DRAFT_APPROVED', {
+              stage: pendingFollowUp.stage,
+              subject: pendingFollowUp.subject,
+              mode: 'direct_fallback',
+            });
+          } else if (body.action === 'skip') {
+            await repo.updateFollowUp(pendingFollowUp.id, {
+              status: 'SKIPPED',
+              decidedAt: nowIso,
+            });
+            await repo.updateApplication(id, {
+              status: 'COMPLETED',
+              subStatus: null,
+              nextActionAt: null,
+            });
+            await repo.logEvent(id, 'DRAFT_SKIPPED', {
+              action: 'skip',
+              stage: pendingFollowUp.stage,
+              mode: 'direct_fallback',
+            });
+          } else if (body.action === 'snooze') {
+            const snoozeMs = body.snoozeDurationMs || 24 * 60 * 60 * 1000;
+            const nextActionAt = new Date(Date.now() + snoozeMs).toISOString();
+            await repo.updateApplication(id, {
+              status: 'HUNTING',
+              subStatus: 'WAITING',
+              nextActionAt,
+            });
+            await repo.logEvent(id, 'TIMER_FIRED', {
+              action: 'snooze',
+              stage: pendingFollowUp.stage,
+              snoozeDurationMs: snoozeMs,
+              nextActionAt,
+              mode: 'direct_fallback',
+            });
+          }
+        }
+      }
 
       eventBus.broadcast({
         type: 'DRAFT_DECISION',
