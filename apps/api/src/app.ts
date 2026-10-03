@@ -18,6 +18,7 @@ export interface AppOptions {
 
 export async function buildApp(options: AppOptions = {}): Promise<FastifyInstance> {
   const app = Fastify({
+    caseSensitive: false,
     logger: options.logger ?? false,
   });
 
