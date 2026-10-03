@@ -23,9 +23,9 @@
 | :---: | :---: |
 | ![Review Draft Panel](docs/screenshots/review_draft_panel.png) | ![Sentinel Telemetry Orbit](docs/screenshots/sentinel_telemetry_orbit.png) |
 
-| Real-Time Event Feed & Notifications |
-| :---: |
-| ![Notifications Feed](docs/screenshots/notifications_feed.png) |
+| Real-Time Event Feed & Notifications | Settings & Environment Diagnostics |
+| :---: | :---: |
+| ![Notifications Feed](docs/screenshots/notifications_feed.png) | ![Settings Page](docs/screenshots/settings_page.png) |
 
 ---
 

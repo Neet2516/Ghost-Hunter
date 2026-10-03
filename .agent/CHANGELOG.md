@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Settings & Environment Diagnostics Page (`/app/settings`):
+  - Created complete Settings & Diagnostics screen in `apps/web/src/app/app/settings/page.tsx` fulfilling specifications from `docs/PAGE_FLOW.md` and `docs/COMPONENT_ARCHITECTURE.md`.
+  - Added real-time Local AI Inference Engine telemetry with `ModelStatus`, ping latency, and fallback mode alerts.
+  - Implemented interactive Inference Probe action (`POST /api/system/test-generate`) with live benchmark display.
+  - Added global Accelerated Demo Mode toggle (20s countdowns vs multi-day production intervals) synchronized with `localStorage`.
+  - Added Desktop Browser Notification permission requester and SSE Event Stream live heartbeat indicator.
+  - Added Cluster Telemetry panel with Temporal Server, task queue, API endpoint, and direct link to Temporal Web UI (`:8233`).
+  - Added system diagnostics endpoints `GET /api/system/model-status` and `POST /api/system/test-generate` in Fastify API.
+  - Captured real high-resolution screenshot `docs/screenshots/settings_page.png` and linked in `README.md`.
 - Created Comprehensive README, Real UI Screenshots, and Architectural Documentation (TASK-022):
   - Created root `README.md` satisfying all requirements of `docs/README_PLAN.md` with complete architectural diagrams, problem statement, features, setup guides, and quickstart commands.
   - Implemented automated screenshot runner `scripts/capture-screenshots.js` using headless Chrome and captured 5 real high-resolution screenshots in `docs/screenshots/`:

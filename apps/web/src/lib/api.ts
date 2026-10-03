@@ -155,4 +155,30 @@ export const api = {
       }
     );
   },
+
+  // System & Telemetry Diagnostics
+  async getHealth(): Promise<{ status: string; taskQueue: string; timestamp: string }> {
+    return request<{ status: string; taskQueue: string; timestamp: string }>('/health');
+  },
+
+  async getModelStatus(): Promise<{
+    status: 'ok' | 'degraded' | 'offline';
+    model: string;
+    baseUrl: string;
+    latencyMs: number | null;
+    installedModels?: string[];
+    error?: string;
+  }> {
+    return request('/system/model-status');
+  },
+
+  async testGenerate(): Promise<{
+    success: boolean;
+    source: string;
+    latencyMs: number;
+    response?: string;
+    message?: string;
+  }> {
+    return request('/system/test-generate', { method: 'POST' });
+  },
 };
