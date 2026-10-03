@@ -13,11 +13,13 @@ import {
   Hairline,
   MonoData,
 } from '@/components/primitives';
+import { useToast } from '@/components/providers/ToastProvider';
 import { ArrowLeft, ArrowRight, Check, Zap } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CreateApplicationPage() {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(true);
@@ -39,9 +41,11 @@ export default function CreateApplicationPage() {
   const mutation = useMutation({
     mutationFn: (data: CreateApplicationInput) => api.createApplication(data),
     onSuccess: (created) => {
+      toast.success('Hunt Initialized', `Outreach sentinel configured for ${created.company}`);
       router.push(`/app/applications/${created.id}`);
     },
     onError: (err: ApiError) => {
+      toast.error('Initialization Failed', err.message || 'Could not create application');
       if (err.fields) {
         const fieldErrors: Record<string, string> = {};
         for (const [key, msgs] of Object.entries(err.fields)) {

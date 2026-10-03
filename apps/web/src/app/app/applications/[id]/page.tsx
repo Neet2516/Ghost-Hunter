@@ -12,7 +12,9 @@ import {
   StatusChip,
   MonoData,
   Hairline,
+  ConfirmDialog,
 } from '@/components/primitives';
+import { useToast } from '@/components/providers/ToastProvider';
 import {
   ErrorState,
   DraftReviewPanel,
@@ -37,6 +39,8 @@ export default function ApplicationDetailPage() {
   const params = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const id = params.id as string;
 
   const {
@@ -65,24 +69,33 @@ export default function ApplicationDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => api.deleteApplication(id),
     onSuccess: () => {
+      toast.success('Application Deleted', `Successfully removed ${application?.company} application`);
       queryClient.invalidateQueries({ queryKey: ['applications'] });
       router.push('/app/applications');
+    },
+    onError: (err: any) => {
+      toast.error('Deletion Failed', err.message || 'Could not delete application');
     },
   });
 
   const startMutation = useMutation({
     mutationFn: (options?: { isDemoMode?: boolean }) => api.startHunt(id, options),
     onSuccess: () => {
+      toast.success('Sentinel Armed', `Cadence timer initiated for ${application?.company}`);
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
       queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+    onError: (err: any) => {
+      toast.error('Failed to Start Sentinel', err.message || 'Could not start workflow');
     },
   });
 
   const replyMutation = useMutation({
     mutationFn: () => api.replyHunt(id),
     onSuccess: () => {
+      toast.success('Recruiter Replied', `Marked ${application?.company} as replied`);
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
@@ -93,6 +106,7 @@ export default function ApplicationDetailPage() {
   const cancelMutation = useMutation({
     mutationFn: () => api.cancelHunt(id),
     onSuccess: () => {
+      toast.info('Hunt Cancelled', `Sentinel cadence stopped for ${application?.company}`);
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
@@ -103,11 +117,15 @@ export default function ApplicationDetailPage() {
   const decisionMutation = useMutation({
     mutationFn: (payload: { action: 'approve' | 'skip' | 'snooze'; editedBody?: string; snoozeDurationMs?: number }) =>
       api.submitDecision(id, payload),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.success('Draft Action Processed', `Decision recorded: ${data.action.toUpperCase()}`);
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });
       queryClient.invalidateQueries({ queryKey: ['applications'] });
+    },
+    onError: (err: any) => {
+      toast.error('Decision Failed', err.message || 'Could not process decision');
     },
   });
 
@@ -172,11 +190,7 @@ export default function ApplicationDetailPage() {
           <Button
             variant="destructive"
             size="sm"
-            onClick={() => {
-              if (confirm(`Delete application for ${application.company}?`)) {
-                deleteMutation.mutate();
-              }
-            }}
+            onClick={() => setIsDeleteDialogOpen(true)}
             isLoading={deleteMutation.isPending}
             leftIcon={<Trash2 className="w-3.5 h-3.5" />}
           >
@@ -337,6 +351,22 @@ export default function ApplicationDetailPage() {
           <Text variant="muted">No events recorded yet.</Text>
         )}
       </div>
+
+      {/* Delete Application Modal Dialog */}
+      <ConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        title={`Delete ${application.company}?`}
+        description={`Are you sure you want to delete the outreach thread for ${application.role} at ${application.company}? All tracked events and follow-up drafts will be permanently removed.`}
+        confirmLabel="Delete Application"
+        cancelLabel="Keep Application"
+        variant="danger"
+        isLoading={deleteMutation.isPending}
+        onConfirm={() => {
+          deleteMutation.mutate();
+          setIsDeleteDialogOpen(false);
+        }}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      />
     </div>
   );
 }

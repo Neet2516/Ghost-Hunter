@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FollowUp, countWords, MAX_DRAFT_WORDS } from '@ghost-hunter/shared';
 import { Display, Text, Button, StatusChip, MonoData, Hairline } from '@/components/primitives';
 import { StreamText } from '@/components/animation';
+import { useToast } from '@/components/providers/ToastProvider';
 import {
   Check,
   Copy,
@@ -32,6 +33,7 @@ export function DraftReviewPanel({
   onSnooze,
   isSubmitting = false,
 }: DraftReviewPanelProps) {
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [editedBody, setEditedBody] = useState(followUp.editedBody || followUp.body);
   const [copied, setCopied] = useState(false);
@@ -43,6 +45,7 @@ export function DraftReviewPanel({
   const handleCopy = () => {
     navigator.clipboard.writeText(`Subject: ${followUp.subject}\n\n${currentBody}`);
     setCopied(true);
+    toast.info('Copied to Clipboard', 'Subject and draft text copied');
     setTimeout(() => setCopied(false), 2000);
   };
 

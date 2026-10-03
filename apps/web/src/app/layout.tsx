@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Bricolage_Grotesque, JetBrains_Mono } from 'next/font/google';
 import { QueryProvider } from '@/components/providers/QueryProvider';
+import { ToastProvider } from '@/components/providers/ToastProvider';
 import './globals.css';
 
 const displayFont = Bricolage_Grotesque({
@@ -63,7 +64,9 @@ export default function RootLayout({
       className={`${displayFont.variable} ${sansFont.variable} ${monoFont.variable}`}
     >
       <body className="min-h-screen bg-paper text-ink font-sans antialiased">
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -9,3 +9,4 @@ export * from './Hairline';
 export * from './Grain';
 export * from './Section';
 export * from './Counter';
+export * from './ConfirmDialog';
