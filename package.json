@@ -8,10 +8,15 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
-    "temporal": "temporal server start-dev --db-filename ./temporal.db --port 7233 --ui-port 8233"
+    "temporal": "temporal server start-dev --db-filename ./temporal.db --port 7233 --ui-port 8233",
+    "chaos": "tsx scripts/chaos.ts",
+    "chaos:worker": "tsx scripts/chaos.ts --scenario=worker",
+    "chaos:temporal": "tsx scripts/chaos.ts --scenario=temporal"
   },
   "devDependencies": {
+    "@temporalio/client": "^1.24.0",
     "prettier": "^3.3.3",
+    "tsx": "^4.23.15",
     "typescript": "^5.6.3"
   }
 }

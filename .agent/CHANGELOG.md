@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Chaos & Disaster Recovery Tests (TASK-018):
+  - Created executable chaos harness in `scripts/chaos.ts` with CLI flags (`--scenario=worker`, `--scenario=temporal`, `--all`) and root `package.json` scripts (`pnpm chaos`, `pnpm chaos:worker`, `pnpm chaos:temporal`).
+  - Created companion shell runner scripts `scripts/chaos-worker-restart.sh` and `scripts/chaos-temporal-restart.sh`.
+  - Implemented Scenario #5 (Worker Kill & Restart Recovery): Spawns Worker 1, starts workflow with cadence timer, executes SIGKILL mid-wait, verifies Temporal Server preserves workflow state in `RUNNING` with 0 active workers, spawns Worker 2 after timer expiration, and verifies Worker 2 recovers workflow, generates draft, and completes execution with zero state loss and zero duplicate events.
+  - Implemented Scenario #6 (Temporal Server Blip & Reconnection): Tests multi-stage execution across connection drops and server restarts against persistent SQLite database (`./temporal.db`), demonstrating automatic gRPC reconnection and task queue drain without worker process restart.
+  - Authored comprehensive disaster recovery documentation in `docs/CHAOS_RECOVERY_RESULTS.md` detailing fault-tolerance mechanics, verified metrics, architecture diagrams, and reproduction steps.
+  - Verified full workspace integrity: 69 tests passing (14 shared + 33 API + 22 worker), zero TypeScript errors across all 4 packages, and Next.js production build clean.
 - Implemented Workflow UI and Cadence Telemetry (TASK-017):
   - Created `useCountdown` hook in `apps/web/src/hooks/useCountdown.ts` and `CountdownMono` component in `apps/web/src/components/domain/CountdownMono.tsx` with live 1s cadence ticking, accessible polite announcements, and pulse indicators.
   - Implemented `TrailTimeline` in `apps/web/src/components/domain/TrailTimeline.tsx` displaying the complete cadence journey (initial outreach, multi-stage progress nodes with status indicators, Gemma/Template badges, timestamps, and stage previews).

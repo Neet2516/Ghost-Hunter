@@ -174,3 +174,14 @@
   - Implemented `ModelStatus` in `apps/web/src/components/domain/ModelStatus.tsx` displaying real-time local Gemma inference status, latency, and refresh trigger.
   - Upgraded application detail view (`/app/applications/[id]`) and Dashboard (`/app`) with live telemetry and query hooks.
   - Verified 69 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 9 static pages.
+  - Created git commit (`78e4fb0`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 18
+- **Focus:** TASK-018 (Chaos/recovery tests).
+- **Actions:**
+  - Implemented automated chaos test harness in `scripts/chaos.ts` with support for CLI flags (`--scenario=worker`, `--scenario=temporal`, `--all`) and root `package.json` scripts (`pnpm chaos`, `pnpm chaos:worker`, `pnpm chaos:temporal`).
+  - Added companion shell scripts `scripts/chaos-worker-restart.sh` and `scripts/chaos-temporal-restart.sh` with executable permissions.
+  - Implemented Scenario #5 (Worker Kill & Restart Recovery): Spawns Worker 1 subprocess, starts workflow with 8s cadence delay, kills Worker 1 abruptly via SIGKILL mid-wait, verifies Temporal Server cluster preserves workflow state in `RUNNING` with 0 active workers, waits for cadence timer to fire on server, spawns Worker 2 subprocess, and verifies Worker 2 recovers the expired timer, generates draft, and completes execution with zero state loss and zero duplicate events.
+  - Implemented Scenario #6 (Temporal Server Blip & Reconnection): Tests multi-stage execution across connection drops and server restarts against persistent SQLite database (`./temporal.db`), demonstrating automatic gRPC reconnection and task queue drain without worker process restart.
+  - Documented disaster recovery architecture, verified metrics, zero-loss guarantees, and step-by-step reproduction instructions in `docs/CHAOS_RECOVERY_RESULTS.md`.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static pages.
