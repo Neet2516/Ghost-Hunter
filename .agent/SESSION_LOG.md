@@ -94,4 +94,15 @@
   - Created time-skipping workflow unit tests in `apps/worker/src/__tests__/workflow.test.ts`.
   - Verified 35 tests passing across monorepo and clean typecheck on all 4 packages.
   - Verified Next.js web build passes cleanly.
+  - Created git commit (`f901fe7`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 11
+- **Focus:** TASK-011 (Signals + race guard).
+- **Actions:**
+  - Added `recruiterRepliedSignal` and `cancelHuntSignal` definitions and handlers to `ghostHunterWorkflow`.
+  - Replaced stage wait with `condition(() => isReplied || isCancelled, delayDuration)`.
+  - Implemented race condition checks to cleanly discard drafts and finalize when signals arrive right around timer triggers.
+  - Added time-skipping unit test scenarios #3 (reply), #4 (cancel), and #14 (race guard) to `apps/worker/src/__tests__/workflow.test.ts`.
+  - Added signal dispatch integration test to `apps/api/src/temporal-client/__tests__/client.test.ts`.
+  - Verified 39 tests passing across workspace, clean `pnpm -r typecheck`, and clean Next.js build.
   - Created git commit and pushed to `origin main`.

@@ -1,7 +1,8 @@
 import {
   defineQuery,
+  defineSignal,
   setHandler,
-  sleep,
+  condition,
   proxyActivities,
 } from '@temporalio/workflow';
 import {
@@ -42,6 +43,20 @@ const { updateApplicationStatus, persistEvent } = proxyActivities<WorkflowActivi
 
 export const getStateQuery = defineQuery<WorkflowStateResponse>('getState');
 
+export interface RecruiterRepliedSignalPayload {
+  note?: string;
+  repliedAt?: string;
+}
+
+export interface CancelHuntSignalPayload {
+  reason?: string;
+}
+
+export const recruiterRepliedSignal =
+  defineSignal<[RecruiterRepliedSignalPayload | undefined]>('recruiterReplied');
+export const cancelHuntSignal =
+  defineSignal<[CancelHuntSignalPayload | undefined]>('cancelHunt');
+
 export interface GhostHunterWorkflowInput {
   applicationId: string;
   company: string;
@@ -80,6 +95,12 @@ export async function ghostHunterWorkflow(
   let draftId: string | null = null;
   let repliedAt: string | null = null;
 
+  // Signal state
+  let isReplied = false;
+  let replyNote: string | undefined = undefined;
+  let isCancelled = false;
+  let cancelReason: string = 'User cancelled hunt';
+
   setHandler(getStateQuery, (): WorkflowStateResponse => ({
     workflowId: `gh-${input.applicationId}`,
     status: currentStatus,
@@ -89,6 +110,21 @@ export async function ghostHunterWorkflow(
     draftId,
     repliedAt,
   }));
+
+  setHandler(recruiterRepliedSignal, (payload) => {
+    isReplied = true;
+    if (payload?.note) {
+      replyNote = payload.note;
+    }
+    repliedAt = payload?.repliedAt || new Date().toISOString();
+  });
+
+  setHandler(cancelHuntSignal, (payload) => {
+    isCancelled = true;
+    if (payload?.reason) {
+      cancelReason = payload.reason;
+    }
+  });
 
   // Initial persist
   await updateApplicationStatus({
@@ -129,10 +165,61 @@ export async function ghostHunterWorkflow(
       payload: { stage, delayDurationMs: delayDuration, nextActionAt },
     });
 
-    // Durable wait for this cadence stage
-    await sleep(delayDuration);
+    // Durable wait for cadence delay or until interrupted by signal
+    await condition(() => isReplied || isCancelled, delayDuration);
 
-    // Timer elapsed
+    // Check if interrupted by recruiter reply
+    if (isReplied) {
+      currentStatus = 'REPLIED';
+      currentSubStatus = null;
+      nextActionAt = null;
+
+      await updateApplicationStatus({
+        applicationId: input.applicationId,
+        status: 'REPLIED',
+        subStatus: null,
+        nextActionAt: null,
+      });
+
+      await persistEvent({
+        applicationId: input.applicationId,
+        type: 'RECRUITER_REPLIED',
+        payload: {
+          stage,
+          repliedAt,
+          note: replyNote,
+        },
+      });
+
+      return 'REPLIED';
+    }
+
+    // Check if interrupted by cancellation
+    if (isCancelled) {
+      currentStatus = 'CANCELLED';
+      currentSubStatus = null;
+      nextActionAt = null;
+
+      await updateApplicationStatus({
+        applicationId: input.applicationId,
+        status: 'CANCELLED',
+        subStatus: null,
+        nextActionAt: null,
+      });
+
+      await persistEvent({
+        applicationId: input.applicationId,
+        type: 'HUNT_CANCELLED',
+        payload: {
+          stage,
+          reason: cancelReason,
+        },
+      });
+
+      return 'CANCELLED';
+    }
+
+    // Timer elapsed without interruption
     currentSubStatus = 'GENERATING';
     nextActionAt = null;
 
@@ -148,6 +235,56 @@ export async function ghostHunterWorkflow(
       type: 'STAGE_TIMER_FIRED',
       payload: { stage },
     });
+
+    // RACE GUARD: Check if reply or cancel signal arrived right as/after timer fired
+    if (isReplied) {
+      currentStatus = 'REPLIED';
+      currentSubStatus = null;
+
+      await updateApplicationStatus({
+        applicationId: input.applicationId,
+        status: 'REPLIED',
+        subStatus: null,
+        nextActionAt: null,
+      });
+
+      await persistEvent({
+        applicationId: input.applicationId,
+        type: 'RECRUITER_REPLIED',
+        payload: {
+          stage,
+          draftDiscarded: true,
+          reason: 'DISCARDED_REPLY',
+          repliedAt,
+        },
+      });
+
+      return 'REPLIED';
+    }
+
+    if (isCancelled) {
+      currentStatus = 'CANCELLED';
+      currentSubStatus = null;
+
+      await updateApplicationStatus({
+        applicationId: input.applicationId,
+        status: 'CANCELLED',
+        subStatus: null,
+        nextActionAt: null,
+      });
+
+      await persistEvent({
+        applicationId: input.applicationId,
+        type: 'HUNT_CANCELLED',
+        payload: {
+          stage,
+          draftDiscarded: true,
+          reason: cancelReason,
+        },
+      });
+
+      return 'CANCELLED';
+    }
   }
 
   // All follow-up stages completed without recruiter response

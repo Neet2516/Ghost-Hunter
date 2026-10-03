@@ -93,4 +93,43 @@ describe('API Temporal Client (TASK-009)', () => {
     testWorker.shutdown();
     await runWorker;
   });
+
+  it('delivers recruiterReplied and cancelHunt signals via temporal client wrapper', async () => {
+    const testWorker = await Worker.create({
+      connection: testEnv.nativeConnection,
+      taskQueue: GHOST_HUNTER_TASK_QUEUE,
+      workflowsPath: new URL('../../../../worker/src/workflows/index.ts', import.meta.url).pathname,
+      activities: {
+        async updateApplicationStatus() {},
+        async persistEvent() {
+          return { id: 'evt-sig' };
+        },
+      },
+    });
+
+    await testWorker.runUntil(async () => {
+      // Start workflow
+      const startRes = await startGhostHunterWorkflow({
+        applicationId: 'app-sig-test',
+        company: 'TestCo',
+        role: 'Dev',
+        cadenceSchedule: [100000],
+        customClient: testEnv.client,
+      });
+
+      // Signal recruiterReplied
+      await signalRecruiterReplied(
+        'app-sig-test',
+        { note: 'Recruiter responded' },
+        testEnv.client
+      );
+
+      const handle = testEnv.client.workflow.getHandle(startRes.workflowId);
+      const result = await handle.result();
+      expect(result).toBe('REPLIED');
+
+      const state = await queryWorkflowState('app-sig-test', testEnv.client);
+      expect(state.status).toBe('REPLIED');
+    });
+  });
 });

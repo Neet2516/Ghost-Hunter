@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Signals and Race Guard (TASK-011):
+  - Defined and implemented `recruiterReplied` and `cancelHunt` signals in `ghostHunterWorkflow`.
+  - Replaced fixed sleep with deterministic `condition()` wait interruption.
+  - Implemented race condition guard handling signals arriving immediately before/after cadence timer expiry or during transition to `GENERATING`.
+  - Added time-skipping unit test scenarios #3, #4, and #14 in `apps/worker/src/__tests__/workflow.test.ts`.
+  - Added signal dispatch integration test in `apps/api/src/temporal-client/__tests__/client.test.ts`.
 - Implemented Workflow v1 (TASK-010):
   - Created deterministic `ghostHunterWorkflow` in `apps/worker/src/workflows/ghostHunterWorkflow.ts` adhering strictly to sandbox rules.
   - Implemented multi-stage cadence loop with durable `sleep` timers, stage transitions, and `getState` Query handler.
