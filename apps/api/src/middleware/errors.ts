@@ -31,6 +31,24 @@ export function errorHandler(error: FastifyError | Error, _request: FastifyReque
     });
   }
 
+  if (error.name === 'WorkflowConflictError') {
+    return reply.status(409).send({
+      error: {
+        code: 'WORKFLOW_ALREADY_RUNNING',
+        message: error.message,
+      },
+    });
+  }
+
+  if (error.name === 'TemporalServiceError') {
+    return reply.status(503).send({
+      error: {
+        code: 'TEMPORAL_UNAVAILABLE',
+        message: error.message,
+      },
+    });
+  }
+
   const statusCode = (error as FastifyError).statusCode || 500;
   return reply.status(statusCode).send({
     error: {

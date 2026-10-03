@@ -81,6 +81,7 @@ export async function startGhostHunterWorkflow(params: {
   cadenceSchedule?: number[];
   maxFollowUps?: number;
   outreachContext?: string | null;
+  isDemoMode?: boolean;
   customClient?: Client;
 }): Promise<{ workflowId: string; runId: string }> {
   try {
@@ -101,6 +102,7 @@ export async function startGhostHunterWorkflow(params: {
           cadenceSchedule: params.cadenceSchedule || [3, 7, 14],
           maxFollowUps: params.maxFollowUps || 3,
           outreachContext: params.outreachContext || undefined,
+          isDemoMode: params.isDemoMode,
         },
       ],
     });

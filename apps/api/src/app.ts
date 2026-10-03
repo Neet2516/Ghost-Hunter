@@ -1,12 +1,14 @@
 import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import { GHOST_HUNTER_TASK_QUEUE } from '@ghost-hunter/shared';
+import { Client } from '@temporalio/client';
 import { errorHandler } from './middleware/errors.js';
 import { DatabaseRepository, getDatabase } from './db/index.js';
 import { registerApplicationRoutes } from './routes/applications.js';
 
 export interface AppOptions {
   repo?: DatabaseRepository;
+  temporalClient?: Client;
   logger?: boolean;
 }
 
@@ -36,8 +38,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
   app.get('/health', healthHandler);
   app.get('/api/health', healthHandler);
 
-  // Application CRUD routes
-  await app.register(registerApplicationRoutes(repo), { prefix: '/api/applications' });
+  // Application CRUD & Workflow routes
+  await app.register(registerApplicationRoutes(repo, options.temporalClient), {
+    prefix: '/api/applications',
+  });
 
   return app;
 }

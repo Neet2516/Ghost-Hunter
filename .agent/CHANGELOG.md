@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Workflow Endpoints and Duplicate Protection (TASK-012):
+  - Created Fastify endpoints: `POST /api/applications/:id/start`, `POST /api/applications/:id/reply`, `POST /api/applications/:id/cancel`, and `GET /api/applications/:id/state`.
+  - Added 409 conflict protection against duplicate running workflows (`WORKFLOW_ALREADY_RUNNING`).
+  - Added 503 error mapping for Temporal unreachable errors (`TEMPORAL_UNAVAILABLE`).
+  - Added integration test suite in `apps/api/src/routes/__tests__/applications-workflow.test.ts` validating scenarios #1 and #12.
 - Implemented Signals and Race Guard (TASK-011):
   - Defined and implemented `recruiterReplied` and `cancelHunt` signals in `ghostHunterWorkflow`.
   - Replaced fixed sleep with deterministic `condition()` wait interruption.

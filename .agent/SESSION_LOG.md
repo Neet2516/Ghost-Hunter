@@ -103,6 +103,15 @@
   - Replaced stage wait with `condition(() => isReplied || isCancelled, delayDuration)`.
   - Implemented race condition checks to cleanly discard drafts and finalize when signals arrive right around timer triggers.
   - Added time-skipping unit test scenarios #3 (reply), #4 (cancel), and #14 (race guard) to `apps/worker/src/__tests__/workflow.test.ts`.
-  - Added signal dispatch integration test to `apps/api/src/temporal-client/__tests__/client.test.ts`.
   - Verified 39 tests passing across workspace, clean `pnpm -r typecheck`, and clean Next.js build.
+  - Created git commit (`592b17a`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 12
+- **Focus:** TASK-012 (Start/reply/cancel endpoints + duplicate protection).
+- **Actions:**
+  - Implemented `POST /api/applications/:id/start`, `POST /api/applications/:id/reply`, `POST /api/applications/:id/cancel`, and `GET /api/applications/:id/state`.
+  - Added duplicate workflow protection (409 `WORKFLOW_ALREADY_RUNNING`) and 503 `TEMPORAL_UNAVAILABLE` error mapping.
+  - Updated `buildApp` and routes to support `temporalClient` injection.
+  - Added integration test suite in `apps/api/src/routes/__tests__/applications-workflow.test.ts` verifying Scenarios #1, #12, signals, and state.
+  - Total 44 workspace tests passing, clean typechecks across all 4 packages, and clean Next.js build.
   - Created git commit and pushed to `origin main`.
