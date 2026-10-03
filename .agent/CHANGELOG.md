@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Workflow UI and Cadence Telemetry (TASK-017):
+  - Created `useCountdown` hook in `apps/web/src/hooks/useCountdown.ts` and `CountdownMono` component in `apps/web/src/components/domain/CountdownMono.tsx` with live 1s cadence ticking, accessible polite announcements, and pulse indicators.
+  - Implemented `TrailTimeline` in `apps/web/src/components/domain/TrailTimeline.tsx` displaying the complete cadence journey (initial outreach, multi-stage progress nodes with status indicators, Gemma/Template badges, timestamps, and stage previews).
+  - Implemented `WorkflowPanel` in `apps/web/src/components/domain/WorkflowPanel.tsx` displaying Temporal workflow ID with copy trigger, task queue, workflow and sub-status states, cadence countdown timer, and orbit action buttons (Arm Sentinel, Mark Replied, Cancel Hunt).
+  - Implemented `ModelStatus` in `apps/web/src/components/domain/ModelStatus.tsx` displaying real-time local Gemma inference status, latency, and refresh trigger.
+  - Upgraded application detail view (`/app/applications/[id]`) and Dashboard (`/app`) with live telemetry and query hooks.
+  - Verified with 69 unit/integration/workflow tests, workspace typecheck, and Next.js production build.
 - Implemented Notifications and SSE Event Stream (TASK-016):
   - Created typed `EventBus` singleton in `apps/api/src/events/bus.ts` and SSE endpoints `GET /api/events` and `GET /api/events/stream` with 15-second heartbeat pings.
   - Implemented Notification endpoints: `GET /api/notifications` (with `?unreadOnly=true` filtering) and `POST/PATCH /api/notifications/read` (supporting individual IDs and `all: true`).

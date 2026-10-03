@@ -162,5 +162,15 @@
   - Added unit and integration tests in `apps/api/src/routes/__tests__/notifications.test.ts` and workflow unit test in `apps/worker/src/__tests__/workflow.test.ts` (69 total tests passing).
   - Implemented `useEventStream` hook in `apps/web` with auto-reconnection, query cache invalidation, and HTML5 desktop browser notifications.
   - Implemented `/app/notifications` notifications feed ledger page with unread filter, mark-all-read action, and application jump links.
-  - Connected live unread counter badge and background SSE connection to `AppNavbar`.
+  - Verified 69 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 9 static pages.
+  - Created git commit (`d20d91c`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 17
+- **Focus:** TASK-017 (Workflow UI).
+- **Actions:**
+  - Implemented `useCountdown` hook in `apps/web/src/hooks/useCountdown.ts` and `CountdownMono` component in `apps/web/src/components/domain/CountdownMono.tsx` with live 1s cadence countdown, accessible polite announcements, and pulse indicators.
+  - Implemented `TrailTimeline` in `apps/web/src/components/domain/TrailTimeline.tsx` displaying the complete multi-stage cadence journey (initial outreach sent, multi-stage progress nodes with status indicators, Gemma/Template badges, timestamps, and stage previews).
+  - Implemented `WorkflowPanel` in `apps/web/src/components/domain/WorkflowPanel.tsx` displaying Temporal workflow ID with copy trigger, task queue, workflow and sub-status states, cadence countdown timer, and orbit action buttons (Arm Sentinel, Mark Replied, Cancel Hunt).
+  - Implemented `ModelStatus` in `apps/web/src/components/domain/ModelStatus.tsx` displaying real-time local Gemma inference status, latency, and refresh trigger.
+  - Upgraded application detail view (`/app/applications/[id]`) and Dashboard (`/app`) with live telemetry and query hooks.
   - Verified 69 workspace tests passing, clean typechecks across all 4 packages, and Next.js production build passing with 9 static pages.

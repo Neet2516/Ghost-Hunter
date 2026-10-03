@@ -13,7 +13,12 @@ import {
   MonoData,
   Hairline,
 } from '@/components/primitives';
-import { ErrorState, DraftReviewPanel } from '@/components/domain';
+import {
+  ErrorState,
+  DraftReviewPanel,
+  WorkflowPanel,
+  TrailTimeline,
+} from '@/components/domain';
 import {
   ArrowLeft,
   Clock,
@@ -180,61 +185,16 @@ export default function ApplicationDetailPage() {
         </div>
       </div>
 
-      {/* Sentinel Controls Banner */}
-      <div className="p-6 bg-bone hairline shadow-hard flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="font-mono text-xs uppercase tracking-widest font-extrabold text-signal block">
-            Sentinel Orbit Controls
-          </span>
-          <Text variant="body" className="text-sm text-ash">
-            {application.status === 'DRAFT'
-              ? 'Sentinel is in DRAFT state. Arming it launches the durable Temporal workflow.'
-              : application.subStatus === 'AWAITING_REVIEW'
-              ? 'Stage follow-up draft is waiting for human approval.'
-              : application.status === 'HUNTING'
-              ? 'Workflow is active and durably sleeping until next cadence check.'
-              : application.status === 'REPLIED'
-              ? 'Recruiter response confirmed. Sentinel completed.'
-              : 'Workflow finalized.'}
-          </Text>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          {application.status === 'DRAFT' && (
-            <Button
-              variant="signal"
-              size="md"
-              onClick={() => startMutation.mutate()}
-              isLoading={startMutation.isPending}
-              leftIcon={<Play className="w-4 h-4" />}
-            >
-              Arm Sentinel
-            </Button>
-          )}
-          {application.status === 'HUNTING' && (
-            <>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => replyMutation.mutate()}
-                isLoading={replyMutation.isPending}
-                leftIcon={<CheckCircle2 className="w-4 h-4 text-moss" />}
-              >
-                Mark Replied
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => cancelMutation.mutate()}
-                isLoading={cancelMutation.isPending}
-                leftIcon={<XCircle className="w-4 h-4 text-ash" />}
-              >
-                Cancel Hunt
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
+      {/* Temporal Sentinel Orbit Telemetry & Controls */}
+      <WorkflowPanel
+        application={application}
+        onStartHunt={() => startMutation.mutate()}
+        onMarkReplied={() => replyMutation.mutate()}
+        onCancelHunt={() => cancelMutation.mutate()}
+        isStarting={startMutation.isPending}
+        isReplying={replyMutation.isPending}
+        isCancelling={cancelMutation.isPending}
+      />
 
       {/* Draft Review Panel (when awaiting review or pending draft exists) */}
       {pendingDraft && (
@@ -335,6 +295,13 @@ export default function ApplicationDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Multi-Stage Cadence Trail Timeline */}
+      <TrailTimeline
+        application={application}
+        followups={followups}
+        events={events}
+      />
 
       {/* Event Timeline Trail */}
       <div className="hairline p-8 bg-paper shadow-hard space-y-6">
