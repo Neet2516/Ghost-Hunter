@@ -114,4 +114,18 @@
   - Updated `buildApp` and routes to support `temporalClient` injection.
   - Added integration test suite in `apps/api/src/routes/__tests__/applications-workflow.test.ts` verifying Scenarios #1, #12, signals, and state.
   - Total 44 workspace tests passing, clean typechecks across all 4 packages, and clean Next.js build.
-  - Created git commit and pushed to `origin main`.
+  - Created git commit (`3e785b0`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 13
+- **Focus:** TASK-013 (Ollama client + draft activity).
+- **Actions:**
+  - Implemented prompt builder with quarantined `<DATA>` blocks, recruiter first name extraction, and anti-hallucination rules in `apps/worker/src/ollama/prompt.ts`.
+  - Added Zod draft schema validation and markdown stripping in `validateAndParseDraft`.
+  - Implemented multi-stage fallback template generator for graceful offline/degraded operations.
+  - Implemented `OllamaClient` with model health inspection (`/api/tags`), temperature clamping ($\le 0.4$), 90s timeout, and `/api/chat` JSON generation in `apps/worker/src/ollama/client.ts`.
+  - Implemented `generateFollowUpDraft` activity with retry handling, `RETRY` event logging, and fallback template generation on retry exhaustion.
+  - Implemented `checkModelHealth` activity with offline and missing-model detection.
+  - Added `ValidationConfigError` in `@ghost-hunter/shared` for non-retryable invalid activity arguments.
+  - Aligned native `better-sqlite3` and `zod` dependencies in `apps/worker`.
+  - Added comprehensive test suite in `apps/worker/src/__tests__/ollama.test.ts` verifying Scenarios #7, #8, #9, and #10.
+  - Verified 57 workspace tests passing, `pnpm -r typecheck` passing across all 4 packages, and Next.js web build passing cleanly.

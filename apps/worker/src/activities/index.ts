@@ -77,6 +77,4 @@ export async function notifyUser(input: NotifyUserInput): Promise<{ id: string }
   return { id };
 }
 
-export async function checkModelHealth(): Promise<{ status: string }> {
-  return { status: 'healthy' };
-}
+export * from './ollama.js';

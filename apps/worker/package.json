@@ -15,8 +15,9 @@
     "@temporalio/client": "^1.11.7",
     "@temporalio/worker": "^1.11.7",
     "@temporalio/workflow": "^1.11.7",
-    "better-sqlite3": "^13.0.3",
-    "drizzle-orm": "^0.45.3"
+    "better-sqlite3": "^11.5.0",
+    "drizzle-orm": "^0.35.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@temporalio/testing": "^1.11.7",

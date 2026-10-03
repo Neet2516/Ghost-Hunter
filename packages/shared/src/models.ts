@@ -130,3 +130,11 @@ export const AIDraftOutputSchema = z.object({
   }
 });
 export type AIDraftOutput = z.infer<typeof AIDraftOutputSchema>;
+
+export class ValidationConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ValidationConfigError';
+    Object.setPrototypeOf(this, ValidationConfigError.prototype);
+  }
+}

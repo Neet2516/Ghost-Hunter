@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Ollama Client and Follow-up Draft Activity (TASK-013):
+  - Created prompt builder with anti-hallucination rules, recruiter first name extraction, and quarantined `<DATA>` blocks in `apps/worker/src/ollama/prompt.ts`.
+  - Created Zod validation schema enforcement and markdown stripping in `validateAndParseDraft`.
+  - Implemented dependable multi-stage fallback templates adhering to word count and token restrictions.
+  - Implemented `OllamaClient` in `apps/worker/src/ollama/client.ts` with health checks via `/api/tags`, temperature clamping ($\le 0.4$), 90s timeout, and `/api/chat` JSON generation.
+  - Created `generateFollowUpDraft` and `checkModelHealth` activities in `apps/worker/src/activities/ollama.ts` supporting retry attempts, `RETRY` event logging, and fallback to `DEGRADED` templates on failure.
+  - Exported `ValidationConfigError` in `@ghost-hunter/shared` for non-retryable invalid activity inputs.
+  - Created unit and mock HTTP stub integration test suite in `apps/worker/src/__tests__/ollama.test.ts` covering Scenarios #7, #8, #9, and #10 (17 passing worker tests).
 - Implemented Workflow Endpoints and Duplicate Protection (TASK-012):
   - Created Fastify endpoints: `POST /api/applications/:id/start`, `POST /api/applications/:id/reply`, `POST /api/applications/:id/cancel`, and `GET /api/applications/:id/state`.
   - Added 409 conflict protection against duplicate running workflows (`WORKFLOW_ALREADY_RUNNING`).

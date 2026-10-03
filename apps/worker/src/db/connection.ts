@@ -29,3 +29,9 @@ export function getDatabase(): { sqlite: Database.Database; db: WorkerDatabase }
   }
   return defaultInstance;
 }
+
+export function setDatabaseInstance(
+  instance: { sqlite: Database.Database; db: WorkerDatabase } | null
+): void {
+  defaultInstance = instance;
+}
