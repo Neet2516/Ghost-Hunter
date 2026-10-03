@@ -183,5 +183,18 @@
   - Added companion shell scripts `scripts/chaos-worker-restart.sh` and `scripts/chaos-temporal-restart.sh` with executable permissions.
   - Implemented Scenario #5 (Worker Kill & Restart Recovery): Spawns Worker 1 subprocess, starts workflow with 8s cadence delay, kills Worker 1 abruptly via SIGKILL mid-wait, verifies Temporal Server cluster preserves workflow state in `RUNNING` with 0 active workers, waits for cadence timer to fire on server, spawns Worker 2 subprocess, and verifies Worker 2 recovers the expired timer, generates draft, and completes execution with zero state loss and zero duplicate events.
   - Implemented Scenario #6 (Temporal Server Blip & Reconnection): Tests multi-stage execution across connection drops and server restarts against persistent SQLite database (`./temporal.db`), demonstrating automatic gRPC reconnection and task queue drain without worker process restart.
-  - Documented disaster recovery architecture, verified metrics, zero-loss guarantees, and step-by-step reproduction instructions in `docs/CHAOS_RECOVERY_RESULTS.md`.
   - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static pages.
+  - Created git commit (`a0ee3d6`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 19
+- **Focus:** TASK-019 (Landing + motion).
+- **Actions:**
+  - Added `lenis` and `gsap` dependencies to `@ghost-hunter/web`.
+  - Built `SmoothScrollProvider` in `apps/web/src/components/marketing/SmoothScrollProvider.tsx` configuring Lenis smooth scrolling (lerp 0.08) disabled on reduced-motion with an on-page toggle and system media query sync.
+  - Built `HeroSection` in `apps/web/src/components/marketing/HeroSection.tsx` with high-impact editorial typography ("Silence is data."), live simulated Sentinel telemetry widget, real-time cadence ticker, and quick CTAs.
+  - Built `ScrollStory` in `apps/web/src/components/marketing/ScrollStory.tsx` showcasing the 5-step journey (Apply, Wait, Signal, Follow-up, Review) with step selection tabs, rich narrative, technical Temporal specifications, and simulated terminal previews.
+  - Built `ArchitectureSection` in `apps/web/src/components/marketing/ArchitectureSection.tsx` detailing the three durability pillars (Temporal State Machine, Air-Gapped Local Gemma, Human Review Gate) and an architectural comparison matrix against standard cloud CRMs.
+  - Built `InteractiveDraftSimulator` in `apps/web/src/components/marketing/InteractiveDraftSimulator.tsx` allowing interactive inspection of local Gemma prompt synthesis, word count tracking (120 words), and draft copying.
+  - Built `CtaBanner` in `apps/web/src/components/marketing/CtaBanner.tsx` with high-contrast editorial styling and direct links to the application.
+  - Assembled complete landing page in `apps/web/src/app/page.tsx` wrapped in `SmoothScrollProvider` and `MarketingLayout`.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.

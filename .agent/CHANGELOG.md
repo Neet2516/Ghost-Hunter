@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Implemented Landing Page & Motion System (TASK-019):
+  - Installed `lenis` and `gsap` for marketing interactions.
+  - Implemented `SmoothScrollProvider` in `apps/web/src/components/marketing/SmoothScrollProvider.tsx` with Lenis smooth scrolling (lerp 0.08) disabled on reduced motion, system media query sync, and user toggle context.
+  - Implemented `HeroSection` in `apps/web/src/components/marketing/HeroSection.tsx` with high-impact editorial typography ("Silence is data."), live simulated Sentinel telemetry widget, real-time cadence ticking, and quick CTAs.
+  - Implemented `ScrollStory` in `apps/web/src/components/marketing/ScrollStory.tsx` presenting an interactive 5-step journey (Apply, Wait, Signal, Follow-up, Review) with step tabs, detailed narrative, technical Temporal specifications, and simulated terminal previews.
+  - Implemented `ArchitectureSection` in `apps/web/src/components/marketing/ArchitectureSection.tsx` detailing the three durability pillars (Temporal State Machine, Air-Gapped Local Gemma, Human Review Gate) and an architectural comparison matrix against standard cloud CRMs.
+  - Implemented `InteractiveDraftSimulator` in `apps/web/src/components/marketing/InteractiveDraftSimulator.tsx` allowing interactive inspection of local Gemma prompt synthesis, word count tracking (120 words), and draft copying.
+  - Implemented `CtaBanner` in `apps/web/src/components/marketing/CtaBanner.tsx` with high-contrast editorial styling and direct links to the application.
+  - Verified full accessibility compliance, responsive layout, 69 workspace tests passing, clean typechecks, and Next.js static build passing with 9 static/dynamic pages.
 - Implemented Chaos & Disaster Recovery Tests (TASK-018):
   - Created executable chaos harness in `scripts/chaos.ts` with CLI flags (`--scenario=worker`, `--scenario=temporal`, `--all`) and root `package.json` scripts (`pnpm chaos`, `pnpm chaos:worker`, `pnpm chaos:temporal`).
   - Created companion shell runner scripts `scripts/chaos-worker-restart.sh` and `scripts/chaos-temporal-restart.sh`.
