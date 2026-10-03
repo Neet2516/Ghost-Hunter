@@ -9,9 +9,14 @@ export interface MarketingLayoutProps {
 export function MarketingLayout({ children }: MarketingLayoutProps) {
   return (
     <div className="min-h-screen bg-paper text-ink flex flex-col relative selection:bg-signal selection:text-paper">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Grain />
       <MarketingNavbar />
-      <main className="flex-1 w-full">{children}</main>
+      <main id="main-content" className="flex-1 w-full" tabIndex={-1}>
+        {children}
+      </main>
       <footer className="w-full bg-ink text-paper py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col">

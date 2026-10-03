@@ -24,7 +24,32 @@ const monoFont = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Ghost-Hunter — Silence is data',
-  description: 'Durable, local-first follow-up agent for job and internship outreach.',
+  description:
+    'Temporal-powered, local-Gemma durable follow-up sentinel for job outreach. Zero cloud leakage, human-in-the-loop review gate, and fault-tolerant cadence state machine.',
+  keywords: [
+    'Temporal',
+    'Ollama',
+    'Gemma',
+    'Job Search',
+    'Outreach Sentinel',
+    'Durable Execution',
+    'Follow-up Agent',
+  ],
+  authors: [{ name: 'Ghost-Hunter Sentinel Team' }],
+  openGraph: {
+    title: 'Ghost-Hunter — Silence is data',
+    description:
+      'Durable, local-first follow-up agent for job and internship outreach.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Ghost-Hunter',
+  },
+};
+
+export const viewport = {
+  themeColor: '#0E0E10',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

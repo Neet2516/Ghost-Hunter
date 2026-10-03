@@ -132,13 +132,14 @@ export function WorkflowPanel({
             <button
               type="button"
               onClick={handleCopyWorkflowId}
-              className="text-ash hover:text-ink transition-colors"
+              className="text-ash hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal p-0.5 rounded-sm"
               title="Copy Workflow ID"
+              aria-label="Copy Workflow ID to clipboard"
             >
               {copied ? (
-                <Check className="w-3.5 h-3.5 text-moss" />
+                <Check className="w-3.5 h-3.5 text-moss" aria-hidden="true" />
               ) : (
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
               )}
             </button>
           </div>

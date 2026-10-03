@@ -68,11 +68,13 @@ export function ModelStatus({
               type="button"
               onClick={onRefresh}
               disabled={isRefreshing}
-              className="p-1 text-ash hover:text-ink transition-colors"
+              className="p-1 text-ash hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal rounded-sm"
               title="Refresh local model status"
+              aria-label="Refresh local model status"
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`}
+                aria-hidden="true"
               />
             </button>
           )}

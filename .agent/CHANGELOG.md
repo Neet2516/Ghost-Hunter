@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Completed Polish, Accessibility, and Performance Pass (TASK-021):
+  - Added accessible fixed skip-to-main-content link (`.skip-link`) in `AppLayout` and `MarketingLayout` targeting `<main id="main-content">`.
+  - Added global `:focus-visible` outline rules (`2px solid var(--signal)`) across inputs, buttons, and anchors.
+  - Implemented comprehensive `@media (prefers-reduced-motion: reduce)` overrides disabling animations, transitions, and smooth scrolling for users requesting reduced motion.
+  - Added descriptive `aria-label` attributes to navigation elements, icon-only buttons (Workflow ID copy trigger, ModelStatus refresh trigger, notification bell, edit/stream view toggles), and draft review textarea.
+  - Expanded root layout `metadata` with OpenGraph metadata, locale, viewport settings, theme-color `#0E0E10`, and SEO discovery keywords.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
 - Implemented Demo Mode Toggles and Database Seed Script (TASK-020):
   - Added interactive Demo Mode toggle (20s cadence delay) in `apps/web/src/components/domain/WorkflowPanel.tsx` next to the Arm Sentinel action button.
   - Updated `apps/web/src/app/app/applications/[id]/page.tsx` to pass `isDemoMode` to `api.startHunt(id, options)`.

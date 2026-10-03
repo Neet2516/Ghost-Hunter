@@ -9,9 +9,12 @@ export interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className="min-h-screen bg-paper text-ink flex flex-col relative selection:bg-signal selection:text-paper">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Grain />
       <AppNavbar />
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <main id="main-content" className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12" tabIndex={-1}>
         {children}
       </main>
       <footer className="w-full bg-paper hairline-t py-6 text-center">

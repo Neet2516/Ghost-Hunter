@@ -53,7 +53,7 @@ export function AppNavbar({
         <div className="flex items-center justify-between h-16">
           {/* Logo Brand */}
           <div className="flex items-center gap-6">
-            <Link href="/app" className="flex items-center gap-2 group">
+            <Link href="/app" className="flex items-center gap-2 group" aria-label="Ghost-Hunter Sentinel Home">
               <div className="w-7 h-7 bg-ink text-paper hairline flex items-center justify-center font-black text-xs shadow-sm group-hover:bg-signal transition-colors">
                 GH
               </div>
@@ -68,7 +68,7 @@ export function AppNavbar({
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-1 pl-4 hairline-l">
+            <div className="hidden md:flex items-center space-x-1 pl-4 hairline-l" role="navigation" aria-label="Main Navigation">
               {navLinks.map((link) => {
                 const isActive =
                   link.href === '/app'
@@ -79,7 +79,8 @@ export function AppNavbar({
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`font-mono text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 transition-all ${
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`font-mono text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal ${
                       isActive
                         ? 'bg-ink text-paper shadow-sm'
                         : 'text-ash hover:text-ink hover:bg-bone'
@@ -98,20 +99,22 @@ export function AppNavbar({
             <div
               className="hidden sm:flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-ash hairline px-2.5 py-1 bg-bone/40"
               title="Local Gemma / Ollama inference status"
+              aria-label={`Local inference status: ${currentStatus.label}`}
             >
-              <span className={`w-2 h-2 rounded-full ${currentStatus.dot} animate-pulse`} />
+              <span className={`w-2 h-2 rounded-full ${currentStatus.dot} animate-pulse`} aria-hidden="true" />
               <span>{currentStatus.label}</span>
             </div>
 
             {/* Notification Bell */}
             <Link
               href="/app/notifications"
-              className="relative p-2 text-ink hover:bg-bone hairline transition-colors"
+              className="relative p-2 text-ink hover:bg-bone hairline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
               title="Notifications"
+              aria-label={`Notifications, ${unreadNotificationsCount} unread`}
             >
-              <Bell className="w-4 h-4" />
+              <Bell className="w-4 h-4" aria-hidden="true" />
               {unreadNotificationsCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-signal text-paper font-mono text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-signal text-paper font-mono text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center" aria-hidden="true">
                   {unreadNotificationsCount}
                 </span>
               )}

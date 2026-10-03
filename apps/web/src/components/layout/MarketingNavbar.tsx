@@ -7,7 +7,7 @@ export function MarketingNavbar() {
     <header className="w-full bg-paper hairline-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal" aria-label="Ghost-Hunter Home">
             <div className="w-8 h-8 bg-ink text-paper hairline flex items-center justify-center font-black text-sm shadow-sm">
               GH
             </div>
@@ -21,7 +21,7 @@ export function MarketingNavbar() {
             </div>
           </Link>
 
-          <div className="flex items-center gap-6">
+          <nav className="flex items-center gap-6" aria-label="Landing Navigation">
             <LinkArrow href="/tokens" className="hidden sm:inline-flex text-xs font-mono">
               Tokens
             </LinkArrow>
@@ -30,7 +30,7 @@ export function MarketingNavbar() {
                 Launch Sentinel &rarr;
               </Button>
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </header>

@@ -210,3 +210,14 @@
   - Pre-populated 6 rich realistic outreach records covering every status: Anthropic (`HUNTING (WAITING)` with 18s countdown), Stripe (`HUNTING (AWAITING_REVIEW)` with pending draft and unread notification), Apple (`REPLIED` with interview invitation note), Figma (`COMPLETED` with 2 sent follow-up stages), Vercel (`CANCELLED` with competing offer rationale), and Netflix (`DRAFT` ready for live demonstration with 20s delay).
   - Added root `package.json` scripts `"seed"` and `"seed:reset"`.
   - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
+  - Created git commit (`bbd55ca`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 21
+- **Focus:** TASK-021 (Polish + a11y/perf pass).
+- **Actions:**
+  - Added accessible fixed skip-to-main-content link in `AppLayout.tsx` and `MarketingLayout.tsx` targeting `<main id="main-content">`.
+  - Added global `:focus-visible` styling (`outline: 2px solid var(--signal)`) across inputs, buttons, and links.
+  - Implemented `@media (prefers-reduced-motion: reduce)` overrides disabling animations, transitions, and smooth scrolling for users requesting reduced motion.
+  - Added descriptive `aria-label` attributes to navigation elements, icon-only buttons (Workflow ID copy trigger, ModelStatus refresh trigger, notification bell, edit/stream view toggles), and draft review textarea.
+  - Expanded root layout `metadata` with OpenGraph metadata, locale, viewport settings, theme-color `#0E0E10`, and SEO discovery keywords.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.

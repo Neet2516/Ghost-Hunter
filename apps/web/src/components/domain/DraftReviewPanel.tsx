@@ -87,16 +87,17 @@ export function DraftReviewPanel({
           <button
             type="button"
             onClick={() => setIsEditing(!isEditing)}
-            className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase px-3 py-1.5 bg-paper hairline hover:bg-bone transition-colors"
+            aria-label={isEditing ? 'Switch to stream view' : 'Switch to edit text view'}
+            className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase px-3 py-1.5 bg-paper hairline hover:bg-bone transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
           >
             {isEditing ? (
               <>
-                <Eye className="w-3.5 h-3.5 text-signal" />
+                <Eye className="w-3.5 h-3.5 text-signal" aria-hidden="true" />
                 <span>Stream View</span>
               </>
             ) : (
               <>
-                <Edit3 className="w-3.5 h-3.5 text-ash" />
+                <Edit3 className="w-3.5 h-3.5 text-ash" aria-hidden="true" />
                 <span>Edit Text</span>
               </>
             )}
@@ -105,11 +106,12 @@ export function DraftReviewPanel({
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase px-3 py-1.5 bg-paper hairline hover:bg-bone transition-colors"
+            aria-label="Copy subject and draft text to clipboard"
+            className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase px-3 py-1.5 bg-paper hairline hover:bg-bone transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-moss" />
+                <Check className="w-3.5 h-3.5 text-moss" aria-hidden="true" />
                 <span className="text-moss">Copied</span>
               </>
             ) : (
@@ -177,7 +179,8 @@ export function DraftReviewPanel({
                 value={editedBody}
                 onChange={(e) => setEditedBody(e.target.value)}
                 rows={8}
-                className="w-full p-4 font-sans text-sm md:text-base leading-relaxed bg-bone hairline focus:outline-none focus:ring-1 focus:ring-ink transition-all resize-y"
+                aria-label="Edit follow-up body text"
+                className="w-full p-4 font-sans text-sm md:text-base leading-relaxed bg-bone hairline focus:outline-none focus:ring-2 focus:ring-signal transition-all resize-y"
                 placeholder="Edit follow-up body..."
               />
               <span className="font-mono text-[11px] text-ash block">
