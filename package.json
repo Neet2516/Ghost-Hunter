@@ -9,6 +9,7 @@
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
     "temporal": "temporal server start-dev --db-filename ./temporal.db --port 7233 --ui-port 8233",
+    "status": "tsx scripts/status.ts",
     "chaos": "tsx scripts/chaos.ts",
     "chaos:worker": "tsx scripts/chaos.ts --scenario=worker",
     "chaos:temporal": "tsx scripts/chaos.ts --scenario=temporal",
