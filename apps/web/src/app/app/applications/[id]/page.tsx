@@ -261,7 +261,7 @@ export default function ApplicationDetailPage() {
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-ash font-mono">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(application.outreachSentAt).toLocaleDateString()}</span>
+                  <span suppressHydrationWarning>{new Date(application.outreachSentAt).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
@@ -323,7 +323,7 @@ export default function ApplicationDetailPage() {
                   <span className="font-mono text-xs font-bold uppercase text-signal">
                     {ev.type}
                   </span>
-                  <span className="font-mono text-xs text-ash">
+                  <span className="font-mono text-xs text-ash" suppressHydrationWarning>
                     {new Date(ev.at).toLocaleTimeString()} &bull; {new Date(ev.at).toLocaleDateString()}
                   </span>
                 </div>

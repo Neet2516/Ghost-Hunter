@@ -26,6 +26,11 @@ import {
 export default function NotificationsPage() {
   const queryClient = useQueryClient();
   const [unreadOnly, setUnreadOnly] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const {
     data: notifications,
@@ -107,7 +112,8 @@ export default function NotificationsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {typeof window !== 'undefined' &&
+          {isMounted &&
+            typeof window !== 'undefined' &&
             'Notification' in window &&
             Notification.permission !== 'granted' && (
               <Button
@@ -199,7 +205,7 @@ export default function NotificationsPage() {
                 <div className="space-y-2 max-w-2xl">
                   <div className="flex flex-wrap items-center gap-2.5">
                     {getKindBadge(n.kind)}
-                    <span className="font-mono text-xs text-ash">
+                    <span className="font-mono text-xs text-ash" suppressHydrationWarning>
                       {new Date(n.createdAt).toLocaleTimeString()} &bull;{' '}
                       {new Date(n.createdAt).toLocaleDateString()}
                     </span>
