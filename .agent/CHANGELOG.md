@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Created Comprehensive README, Real UI Screenshots, and Architectural Documentation (TASK-022):
+  - Created root `README.md` satisfying all requirements of `docs/README_PLAN.md` with complete architectural diagrams, problem statement, features, setup guides, and quickstart commands.
+  - Implemented automated screenshot runner `scripts/capture-screenshots.js` using headless Chrome and captured 5 real high-resolution screenshots in `docs/screenshots/`:
+    - `landing_page.png` (Landing hero with tactile grain, typography, and live simulated telemetry)
+    - `dashboard_applications.png` (Applications ledger showcasing all 6 lifecycle statuses)
+    - `review_draft_panel.png` (Draft review gate with typewriter text stream and word counter)
+    - `sentinel_telemetry_orbit.png` (Cadence telemetry orbit with live countdown and timeline)
+    - `notifications_feed.png` (Notifications ledger and real-time SSE event stream)
+  - Detailed the Temporal State Machine architecture, local Gemma/Ollama air-gapped zero-cloud privacy guarantees, and chaos testing results.
+  - Documented the 60-second live demo workflow and step-by-step Quickstart guide.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
 - Completed Polish, Accessibility, and Performance Pass (TASK-021):
   - Added accessible fixed skip-to-main-content link (`.skip-link`) in `AppLayout` and `MarketingLayout` targeting `<main id="main-content">`.
   - Added global `:focus-visible` outline rules (`2px solid var(--signal)`) across inputs, buttons, and anchors.

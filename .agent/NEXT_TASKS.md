@@ -1,11 +1,17 @@
 # Next Tasks — Ghost-Hunter
 
-## Current Task:
-- **TASK-022: README + screenshots + demo recording**
-  - Comprehensive root `README.md` following `docs/README_PLAN.md`.
-  - Architecture diagrams, feature highlights, and setup commands.
-  - Verification of full test coverage, local run instructions, and demo scripts.
+## Roadmap Status:
+**ALL TASKS COMPLETE (TASK-001 through TASK-022)**
 
-## All Roadmap Tasks:
-- TASK-001 through TASK-021: Completed and verified.
-- TASK-022: In progress (Final project documentation and asset pass).
+- **TASK-001 to TASK-017**: Core monorepo, schemas, SQLite persistence, Fastify API, Temporal workflow engine, local Gemma activities, review gates, SSE telemetry, and editorial UI components.
+- **TASK-018**: Automated chaos & recovery test harness (`scripts/chaos.ts`, `docs/CHAOS_RECOVERY_RESULTS.md`).
+- **TASK-019**: Editorial landing page with Lenis smooth scroll and interactive story.
+- **TASK-020**: Fast demo mode (20s delays) and database seeding script (`scripts/seed.ts`, `pnpm seed`, `pnpm seed:reset`).
+- **TASK-021**: Full WCAG AA accessibility, keyboard focus, and reduced-motion pass.
+- **TASK-022**: Production `README.md` with complete architecture diagrams and real application screenshots (`docs/screenshots/`).
+
+## Project Maintenance & Next Steps:
+- System is fully demonstrable locally.
+- Run `pnpm seed:reset` to reload realistic sample data.
+- Run `pnpm chaos` to execute disaster recovery tests.
+- Run `pnpm test` to execute full unit/integration/workflow test suite (69 tests).

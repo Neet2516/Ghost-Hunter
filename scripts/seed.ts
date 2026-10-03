@@ -114,7 +114,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 1. Anthropic: HUNTING / WAITING (Demo countdown: 18s remaining)
     // -------------------------------------------------------------------------
-    const app1Id = 'app-seed-anthropic';
+    const app1Id = '11111111-1111-4111-8111-111111111111';
     insertApp.run({
       id: app1Id,
       company: 'Anthropic',
@@ -135,7 +135,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-anthropic-01',
+      id: '11111111-1111-4111-8111-000000000001',
       applicationId: app1Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Anthropic', role: 'Staff Systems Engineer', channel: 'email' }),
@@ -143,7 +143,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-anthropic-02',
+      id: '11111111-1111-4111-8111-000000000002',
       applicationId: app1Id,
       type: 'HUNT_STARTED',
       payload: JSON.stringify({ workflowId: 'gh-seed-anthropic-01', cadenceSchedule: [20, 20, 20], maxFollowUps: 3 }),
@@ -151,7 +151,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-anthropic-03',
+      id: '11111111-1111-4111-8111-000000000003',
       applicationId: app1Id,
       type: 'TIMER_FIRED',
       payload: JSON.stringify({ stage: 1, delayDurationMs: 20000, nextActionAt: offsetSecs(18) }),
@@ -161,7 +161,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 2. Stripe: HUNTING / AWAITING_REVIEW (Pending Draft + Unread Notification)
     // -------------------------------------------------------------------------
-    const app2Id = 'app-seed-stripe';
+    const app2Id = '22222222-2222-4222-8222-222222222222';
     insertApp.run({
       id: app2Id,
       company: 'Stripe',
@@ -181,7 +181,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
       updatedAt: isoNow,
     });
 
-    const fu2Id = 'fu-seed-stripe-01';
+    const fu2Id = '22222222-2222-4222-8222-000000000001';
     insertFollowUp.run({
       id: fu2Id,
       applicationId: app2Id,
@@ -196,7 +196,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-stripe-01',
+      id: '22222222-2222-4222-8222-000000000011',
       applicationId: app2Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Stripe', role: 'Principal Infrastructure Architect' }),
@@ -204,7 +204,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-stripe-02',
+      id: '22222222-2222-4222-8222-000000000012',
       applicationId: app2Id,
       type: 'HUNT_STARTED',
       payload: JSON.stringify({ workflowId: 'gh-seed-stripe-02' }),
@@ -212,7 +212,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-stripe-03',
+      id: '22222222-2222-4222-8222-000000000013',
       applicationId: app2Id,
       type: 'TIMER_FIRED',
       payload: JSON.stringify({ stage: 1 }),
@@ -220,7 +220,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-stripe-04',
+      id: '22222222-2222-4222-8222-000000000014',
       applicationId: app2Id,
       type: 'DRAFT_READY',
       payload: JSON.stringify({ stage: 1, draftId: fu2Id, source: 'gemma' }),
@@ -228,7 +228,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertNotification.run({
-      id: 'notif-seed-stripe-01',
+      id: '22222222-2222-4222-8222-000000000021',
       applicationId: app2Id,
       kind: 'DRAFT_READY',
       message: 'Follow-up draft ready for Principal Infrastructure Architect at Stripe (Stage 1)',
@@ -239,7 +239,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 3. Apple: REPLIED (Recruiter scheduled technical interview)
     // -------------------------------------------------------------------------
-    const app3Id = 'app-seed-apple';
+    const app3Id = '33333333-3333-4333-8333-333333333333';
     insertApp.run({
       id: app3Id,
       company: 'Apple',
@@ -260,7 +260,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-apple-01',
+      id: '33333333-3333-4333-8333-000000000001',
       applicationId: app3Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Apple', role: 'CoreOS Kernel Engineer', channel: 'linkedin' }),
@@ -268,7 +268,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-apple-02',
+      id: '33333333-3333-4333-8333-000000000002',
       applicationId: app3Id,
       type: 'HUNT_STARTED',
       payload: JSON.stringify({ workflowId: 'gh-seed-apple-03' }),
@@ -276,7 +276,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-apple-03',
+      id: '33333333-3333-4333-8333-000000000003',
       applicationId: app3Id,
       type: 'REPLY_SIGNAL',
       payload: JSON.stringify({
@@ -288,7 +288,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertNotification.run({
-      id: 'notif-seed-apple-01',
+      id: '33333333-3333-4333-8333-000000000011',
       applicationId: app3Id,
       kind: 'REPLY_RECEIVED',
       message: 'Recruiter replied for CoreOS Kernel Engineer at Apple!',
@@ -299,7 +299,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 4. Figma: COMPLETED (All follow-up stages sent)
     // -------------------------------------------------------------------------
-    const app4Id = 'app-seed-figma';
+    const app4Id = '44444444-4444-4444-8444-444444444444';
     insertApp.run({
       id: app4Id,
       company: 'Figma',
@@ -320,7 +320,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertFollowUp.run({
-      id: 'fu-seed-figma-01',
+      id: '44444444-4444-4444-8444-000000000001',
       applicationId: app4Id,
       stage: 1,
       subject: 'Re: Senior Design Systems Engineer role / headless accessibility primitives',
@@ -333,7 +333,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertFollowUp.run({
-      id: 'fu-seed-figma-02',
+      id: '44444444-4444-4444-8444-000000000002',
       applicationId: app4Id,
       stage: 2,
       subject: 'Re: Figma Design Systems / Final check-in',
@@ -346,7 +346,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-figma-01',
+      id: '44444444-4444-4444-8444-000000000011',
       applicationId: app4Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Figma', role: 'Senior Design Systems Engineer' }),
@@ -354,7 +354,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-figma-02',
+      id: '44444444-4444-4444-8444-000000000012',
       applicationId: app4Id,
       type: 'HUNT_STARTED',
       payload: JSON.stringify({ workflowId: 'gh-seed-figma-04' }),
@@ -362,23 +362,23 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-figma-03',
+      id: '44444444-4444-4444-8444-000000000013',
       applicationId: app4Id,
       type: 'DRAFT_APPROVED',
-      payload: JSON.stringify({ stage: 1, draftId: 'fu-seed-figma-01' }),
+      payload: JSON.stringify({ stage: 1, draftId: '44444444-4444-4444-8444-000000000001' }),
       at: offsetDays(-7),
     });
 
     insertEvent.run({
-      id: 'ev-seed-figma-04',
+      id: '44444444-4444-4444-8444-000000000014',
       applicationId: app4Id,
       type: 'DRAFT_APPROVED',
-      payload: JSON.stringify({ stage: 2, draftId: 'fu-seed-figma-02' }),
+      payload: JSON.stringify({ stage: 2, draftId: '44444444-4444-4444-8444-000000000002' }),
       at: offsetDays(-2),
     });
 
     insertEvent.run({
-      id: 'ev-seed-figma-05',
+      id: '44444444-4444-4444-8444-000000000015',
       applicationId: app4Id,
       type: 'COMPLETED',
       payload: JSON.stringify({ stagesCompleted: 2, reason: 'MAX_STAGES_REACHED' }),
@@ -386,7 +386,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertNotification.run({
-      id: 'notif-seed-figma-01',
+      id: '44444444-4444-4444-8444-000000000021',
       applicationId: app4Id,
       kind: 'HUNT_COMPLETED',
       message: 'All 2 follow-up stages completed for Senior Design Systems Engineer at Figma',
@@ -397,7 +397,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 5. Vercel: CANCELLED (User accepted competing offer)
     // -------------------------------------------------------------------------
-    const app5Id = 'app-seed-vercel';
+    const app5Id = '55555555-5555-4555-8555-555555555555';
     insertApp.run({
       id: app5Id,
       company: 'Vercel',
@@ -418,7 +418,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-vercel-01',
+      id: '55555555-5555-4555-8555-000000000001',
       applicationId: app5Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Vercel', role: 'Edge Compute Platform Engineer' }),
@@ -426,7 +426,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-vercel-02',
+      id: '55555555-5555-4555-8555-000000000002',
       applicationId: app5Id,
       type: 'HUNT_STARTED',
       payload: JSON.stringify({ workflowId: 'gh-seed-vercel-05' }),
@@ -434,7 +434,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-vercel-03',
+      id: '55555555-5555-4555-8555-000000000003',
       applicationId: app5Id,
       type: 'CANCELLED',
       payload: JSON.stringify({ reason: 'Accepted another offer at competing infrastructure firm', stage: 1 }),
@@ -442,7 +442,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertNotification.run({
-      id: 'notif-seed-vercel-01',
+      id: '55555555-5555-4555-8555-000000000011',
       applicationId: app5Id,
       kind: 'HUNT_CANCELLED',
       message: 'Cadence cancelled for Edge Compute Platform Engineer at Vercel',
@@ -453,7 +453,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     // -------------------------------------------------------------------------
     // 6. Netflix: DRAFT (Ready for live demonstration "Arm Sentinel" demo)
     // -------------------------------------------------------------------------
-    const app6Id = 'app-seed-netflix';
+    const app6Id = '66666666-6666-4666-8666-666666666666';
     insertApp.run({
       id: app6Id,
       company: 'Netflix',
@@ -474,7 +474,7 @@ export async function runSeed(options: { reset?: boolean; dbPath?: string } = {}
     });
 
     insertEvent.run({
-      id: 'ev-seed-netflix-01',
+      id: '66666666-6666-4666-8666-000000000001',
       applicationId: app6Id,
       type: 'CREATED',
       payload: JSON.stringify({ company: 'Netflix', role: 'Senior Streaming Protocols Engineer', channel: 'email' }),

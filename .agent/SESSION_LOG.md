@@ -221,3 +221,20 @@
   - Added descriptive `aria-label` attributes to navigation elements, icon-only buttons (Workflow ID copy trigger, ModelStatus refresh trigger, notification bell, edit/stream view toggles), and draft review textarea.
   - Expanded root layout `metadata` with OpenGraph metadata, locale, viewport settings, theme-color `#0E0E10`, and SEO discovery keywords.
   - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
+  - Created git commit (`20b6439`) and pushed to `origin main`.
+
+## 2026-10-03 — Session 22
+- **Focus:** TASK-022 (README + screenshots + demo recording).
+- **Actions:**
+  - Authored comprehensive root `README.md` (300+ lines) fulfilling all specifications from `docs/README_PLAN.md`.
+  - Implemented automated screenshot runner in `scripts/capture-screenshots.js` using headless Chrome and captured 5 real high-resolution screenshots in `docs/screenshots/`:
+    - `landing_page.png` (Landing hero with tactile grain, typography, and live simulated telemetry)
+    - `dashboard_applications.png` (Applications ledger showcasing all 6 lifecycle statuses)
+    - `review_draft_panel.png` (Draft review gate with typewriter text stream and word counter)
+    - `sentinel_telemetry_orbit.png` (Cadence telemetry orbit with live countdown and timeline)
+    - `notifications_feed.png` (Notifications ledger and real-time SSE event stream)
+  - Updated `scripts/seed.ts` with standard RFC 4122 UUID identifiers to ensure strict API route parameter schema compliance.
+  - Detailed the Temporal State Machine architecture, local Gemma/Ollama air-gapped zero-cloud privacy guarantees, and chaos testing results.
+  - Documented the 60-second live demo workflow and step-by-step Quickstart guide.
+  - Verified 69 workspace tests passing, zero TypeScript errors across all 4 packages, and Next.js production build passing with 9 static/dynamic pages.
+
