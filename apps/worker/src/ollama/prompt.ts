@@ -49,7 +49,8 @@ CRITICAL RULES:
 4. Do NOT hallucinate past interviews, phone screens, or promises that are not explicitly stated in the outreach context.
 5. Address the recruiter directly by their first name (e.g., "Hi ${firstName},").
 6. Tone: Warm, respectful, concise, and non-presumptive.
-7. Stage guidelines:
+7. Conclude cleanly with "Best regards," without appending placeholder names like "[Your Name]" or "[Candidate Name]".
+8. Stage guidelines:
    - Stage 1: Brief, polite follow-up reiterating interest in the position.
    - Stage 2: Gentle check-in, low pressure, asking if additional info or portfolio links are helpful.
    - Stage 3: Graceful final check-in, acknowledging busy schedules and keeping the door open for future opportunities.`;
@@ -87,11 +88,16 @@ export function validateAndParseDraft(rawOutput: string): AIDraftOutput {
   let cleaned = rawOutput.trim();
   cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
 
-  let parsed: unknown;
+  let parsed: any;
   try {
     parsed = JSON.parse(cleaned);
   } catch (err) {
     throw new Error(`Malformed AI JSON: ${(err as Error).message}. Raw output: ${rawOutput.slice(0, 100)}`);
+  }
+
+  // Sanitize trailing signature placeholders like "[Your Name]" or "[Candidate Name]"
+  if (parsed && typeof parsed.body === 'string') {
+    parsed.body = parsed.body.replace(/\s*\[(?:Your\s*Name|Candidate\s*Name|My\s*Name)\]\s*$/i, '').trim();
   }
 
   const result = AIDraftOutputSchema.safeParse(parsed);

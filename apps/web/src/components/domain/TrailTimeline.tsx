@@ -180,6 +180,8 @@ export function TrailTimeline({
                       ? new Date(followUp.decidedAt).toLocaleString()
                       : followUp?.createdAt
                       ? new Date(followUp.createdAt).toLocaleString()
+                      : application.subStatus === 'GENERATING' && !followUp && stages.find((s) => !followupsByStage.has(s)) === stageNum
+                      ? 'Generating draft now...'
                       : isWaiting && application.nextActionAt
                       ? `Due ${new Date(application.nextActionAt).toLocaleString()}`
                       : 'Upcoming in cadence orbit'}
@@ -197,7 +199,12 @@ export function TrailTimeline({
                   </div>
                 ) : (
                   <div className="pt-2 text-xs font-mono text-ash">
-                    {isWaiting ? (
+                    {application.subStatus === 'GENERATING' && !followUp && stages.find((s) => !followupsByStage.has(s)) === stageNum ? (
+                      <span className="text-signal flex items-center gap-1.5 font-bold animate-pulse">
+                        <Sparkles className="w-3.5 h-3.5 animate-spin" />
+                        Local Gemma AI is synthesizing follow-up draft...
+                      </span>
+                    ) : isWaiting ? (
                       <span className="text-signal">
                         Temporal durable sleep active. Awaiting cadence interval.
                       </span>
