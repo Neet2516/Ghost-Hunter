@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     'Follow-up Agent',
   ],
   authors: [{ name: 'Ghost-Hunter Sentinel Team' }],
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.svg',
+    shortcut: '/icon.svg',
+  },
   openGraph: {
     title: 'Ghost-Hunter — Silence is data',
     description:
