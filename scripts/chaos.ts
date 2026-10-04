@@ -43,7 +43,7 @@ async function sleep(ms: number) {
 
 async function isTemporalRunning(address = 'localhost:7233'): Promise<boolean> {
   try {
-    const connection = await Connection.connect({ address, connectTimeoutMs: 2000 });
+    const connection = await Connection.connect({ address, connectTimeout: 2000 });
     await connection.healthService.check({});
     return true;
   } catch {

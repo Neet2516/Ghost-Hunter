@@ -160,9 +160,25 @@ Ghost-Hunter requires **Ollama** running locally on port `11434`.
 - **VRAM/RAM**: 4 GB minimum (runs smoothly on Apple Silicon M1/M2/M3/M4, NVIDIA RTX GPUs, or modern x86 CPU).
 - **Disk Space**: ~3.5 GB for model weights.
 
-### Pull & Launch
+### Option A: Run via Docker (No Host Installation Needed)
 ```bash
-# Install Ollama (macOS/Linux)
+# 1. Start the Ollama container in the background
+pnpm ollama:docker
+# (or: docker compose up -d ollama)
+
+# 2. Pull the Gemma model into the persistent Docker volume
+pnpm ollama:pull
+# (or: docker exec -it ghost-hunter-ollama ollama pull gemma3:4b)
+
+# 3. Verify Ollama is serving
+curl http://localhost:11434/api/tags
+# or run Ghost-Hunter status monitor
+pnpm status
+```
+
+### Option B: Native Install (macOS / Linux)
+```bash
+# Install Ollama
 curl -fsSL https://ollama.ai/install.sh | sh
 
 # Pull the model
@@ -172,7 +188,7 @@ ollama pull gemma3:4b
 curl http://localhost:11434/api/tags
 ```
 
-> **Offline Fallback Guarantee**: If Ollama is offline or times out (90s limit), the worker automatically logs a `DEGRADED` event and generates a reliable, template-backed draft.
+> **Offline Fallback Guarantee**: If Ollama is offline or times out (90s limit), the worker automatically logs a `DEGRADED` event and generates a reliable, template-backed draft without breaking workflow execution.
 
 ---
 

@@ -12,6 +12,8 @@
     "worker": "pnpm --filter @ghost-hunter/worker dev",
     "api": "pnpm --filter @ghost-hunter/api dev",
     "web": "pnpm --filter @ghost-hunter/web dev",
+    "ollama:docker": "docker compose up -d ollama",
+    "ollama:pull": "docker exec -it ghost-hunter-ollama ollama pull gemma3:4b",
     "status": "tsx scripts/status.ts",
     "chaos": "tsx scripts/chaos.ts",
     "chaos:worker": "tsx scripts/chaos.ts --scenario=worker",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@temporalio/client": "^1.24.0",
+    "@types/node": "^26.6.4",
     "prettier": "^3.3.3",
     "puppeteer-core": "^25.12.0",
     "tsx": "^4.23.15",

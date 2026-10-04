@@ -12,6 +12,8 @@
 
 ## Project Maintenance & Next Steps:
 - System is fully demonstrable locally.
+- Ollama Docker support configured (`pnpm ollama:docker`, `pnpm ollama:pull`).
+- Root scripts (`scripts/status.ts`, `scripts/chaos.ts`, `scripts/seed.ts`) configured with root `tsconfig.json` and `@types/node`.
 - Run `pnpm seed:reset` to reload realistic sample data.
 - Run `pnpm chaos` to execute disaster recovery tests.
 - Run `pnpm test` to execute full unit/integration/workflow test suite (69 tests).
