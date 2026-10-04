@@ -81,6 +81,11 @@ export function useEventStream() {
           'APPLICATION_UPDATED',
           'APPLICATION_DELETED',
           'HUNT_STARTED',
+          'STAGE_WAIT_STARTED',
+          'STAGE_TIMER_FIRED',
+          'DRAFT_READY',
+          'DRAFT_SKIPPED',
+          'WORKFLOW_COMPLETED',
           'REPLY_SIGNAL',
           'CANCELLED',
           'DRAFT_DECISION',
@@ -97,6 +102,16 @@ export function useEventStream() {
             }
           });
         });
+
+        // Also handle generic default SSE messages
+        eventSource.onmessage = (e: MessageEvent) => {
+          try {
+            const data = JSON.parse(e.data);
+            handleGenericEvent(data.type || 'MESSAGE', data);
+          } catch {
+            // ignore non-json heartbeats
+          }
+        };
       } catch {
         setIsConnected(false);
         reconnectTimer = setTimeout(connect, 3000);

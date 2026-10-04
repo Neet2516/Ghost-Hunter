@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const { data: applications, isLoading } = useQuery<Application[]>({
     queryKey: ['applications'],
     queryFn: () => api.listApplications(),
+    refetchInterval: 3000,
   });
 
   const list: Application[] = applications || [];

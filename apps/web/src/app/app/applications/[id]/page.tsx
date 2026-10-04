@@ -52,18 +52,24 @@ export default function ApplicationDetailPage() {
   } = useQuery({
     queryKey: ['application', id],
     queryFn: () => api.getApplication(id),
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === 'HUNTING' ? 2000 : false;
+    },
   });
 
   const { data: events } = useQuery({
     queryKey: ['application', id, 'events'],
     queryFn: () => api.getApplicationEvents(id),
     enabled: !!application,
+    refetchInterval: application?.status === 'HUNTING' ? 2000 : false,
   });
 
   const { data: followups } = useQuery({
     queryKey: ['application', id, 'followups'],
     queryFn: () => api.getApplicationFollowUps(id),
     enabled: !!application,
+    refetchInterval: application?.status === 'HUNTING' ? 2000 : false,
   });
 
   const deleteMutation = useMutation({
@@ -80,8 +86,18 @@ export default function ApplicationDetailPage() {
 
   const startMutation = useMutation({
     mutationFn: (options?: { isDemoMode?: boolean }) => api.startHunt(id, options),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success('Sentinel Armed', `Cadence timer initiated for ${application?.company}`);
+      queryClient.setQueryData(['application', id], (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          status: 'HUNTING',
+          subStatus: 'WAITING',
+          workflowId: data?.workflowId || old.workflowId,
+          nextActionAt: data?.nextActionAt || old.nextActionAt,
+        };
+      });
       queryClient.invalidateQueries({ queryKey: ['application', id] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'events'] });
       queryClient.invalidateQueries({ queryKey: ['application', id, 'followups'] });

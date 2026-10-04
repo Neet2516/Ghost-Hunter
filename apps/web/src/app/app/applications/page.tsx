@@ -29,6 +29,7 @@ export default function ApplicationsListPage() {
   } = useQuery({
     queryKey: ['applications', selectedStatus],
     queryFn: () => api.listApplications(selectedStatus),
+    refetchInterval: 3000,
   });
 
   const filterTabs = [

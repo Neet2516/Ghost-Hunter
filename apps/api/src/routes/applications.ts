@@ -187,6 +187,9 @@ export function registerApplicationRoutes(
       try {
         const isDemo = body?.isDemoMode ?? (application.delayMs < 60000);
         const cadenceSchedule = body?.cadenceSchedule ?? (isDemo ? [20, 20, 20] : undefined);
+        const firstDelaySec = cadenceSchedule ? cadenceSchedule[0] : (isDemo ? 20 : Math.round(application.delayMs / 1000));
+        const firstDelayMs = firstDelaySec * 1000;
+        const nextActionAt = new Date(Date.now() + firstDelayMs).toISOString();
 
         const result = await startGhostHunterWorkflow({
           applicationId: id,
@@ -201,28 +204,31 @@ export function registerApplicationRoutes(
           customClient: temporalClient,
         });
 
-        // Update DB application status
+        // Update DB application status with immediate nextActionAt
         await repo.updateApplication(id, {
           status: 'HUNTING',
           subStatus: 'WAITING',
           workflowId: result.workflowId,
+          nextActionAt,
         });
 
         // Persist audit event
         await repo.logEvent(id, 'HUNT_STARTED', {
           workflowId: result.workflowId,
           startedAt: new Date().toISOString(),
+          nextActionAt,
         });
 
         eventBus.broadcast({
           type: 'HUNT_STARTED',
-          data: { applicationId: id, workflowId: result.workflowId },
+          data: { applicationId: id, workflowId: result.workflowId, nextActionAt },
         });
 
         return reply.status(200).send({
           success: true,
           workflowId: result.workflowId,
           status: 'HUNTING',
+          nextActionAt,
         });
       } catch (err: unknown) {
         if (err instanceof WorkflowConflictError) {

@@ -87,8 +87,8 @@ export const api = {
   async startHunt(
     id: string,
     options?: { cadenceSchedule?: number[]; maxFollowUps?: number; isDemoMode?: boolean }
-  ): Promise<{ success: boolean; workflowId: string; status: string }> {
-    return request<{ success: boolean; workflowId: string; status: string }>(
+  ): Promise<{ success: boolean; workflowId: string; status: string; nextActionAt?: string }> {
+    return request<{ success: boolean; workflowId: string; status: string; nextActionAt?: string }>(
       `/applications/${id}/start`,
       {
         method: 'POST',

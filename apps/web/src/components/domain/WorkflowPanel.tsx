@@ -186,20 +186,26 @@ export function WorkflowPanel({
       </div>
 
       {/* Cadence Countdown Bar (when HUNTING and waiting) */}
-      {application.status === 'HUNTING' && application.nextActionAt && (
+      {application.status === 'HUNTING' && application.subStatus !== 'GENERATING' && (
         <div className="p-4 bg-bone/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6">
           <div className="flex items-center gap-2">
-            <Timer className="w-4 h-4 text-signal" />
+            <Timer className="w-4 h-4 text-signal animate-pulse" />
             <span className="font-mono text-xs uppercase text-ash font-bold">
               Cadence Sentinel Sleep:
             </span>
           </div>
 
-          <CountdownMono
-            targetISO={application.nextActionAt}
-            label=""
-            size="md"
-          />
+          {application.nextActionAt ? (
+            <CountdownMono
+              targetISO={application.nextActionAt}
+              label=""
+              size="md"
+            />
+          ) : (
+            <span className="font-mono text-xs font-bold text-signal animate-pulse">
+              Initializing cadence orbit...
+            </span>
+          )}
         </div>
       )}
     </div>
